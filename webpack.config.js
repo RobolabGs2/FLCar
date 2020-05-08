@@ -17,7 +17,7 @@ module.exports = (env) => {
                     viewport: "width=device-width",
                     charset: "UTF-8"
                 },
-                hash: !true,
+                hash: true,
                 base: './'
             })
         ],
