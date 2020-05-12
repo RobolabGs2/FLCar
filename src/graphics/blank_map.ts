@@ -21,7 +21,7 @@ export class BlankCar implements DrawableActor {
     public constructor() {
         this._view =  get_bitmap("car.png");
         this._angle = 0;
-        this._coords = { x: 500, y: 500 };
+        this._coords = { x: 0, y: 0 };
     }
 }
 

@@ -4,10 +4,21 @@ const MAP_WIDTH = 1000;
 
 export type Point = {
     x: number,
-    y: number
+    y: number,
 }
 
-export type MaybeBitmap = { bitmap: ImageBitmap | undefined };
+export class MaybeBitmap {
+    public bitmap: ImageBitmap | undefined;
+     
+    constructor() {
+    }
+
+    public do(fn: (bitmap: ImageBitmap) => void): MaybeBitmap {
+        if (this.bitmap != undefined)
+            fn(this.bitmap as ImageBitmap);
+        return this;
+    }
+}
 
 // Вообще говоря, любой нефоновый персонаж, в нашем частном случае -- машинка
 export interface DrawableActor {
@@ -58,21 +69,17 @@ export class Drawer {
     }
 
     public draw(map: DrawableMap) {
-        if (map.stage().bitmap)
-            this._context.drawImage(map.stage().bitmap as ImageBitmap, 0,0, this._canvas.width, this._canvas.height);
-        map.actors().forEach(actor => {
-            if (actor.view().bitmap)
-                this.draw_transform(actor.view().bitmap as ImageBitmap, actor.coordinates(), actor.angle());
-        });
+        map.stage().do(bm => this._context.drawImage(bm, 0, 0, this._canvas.width, this._canvas.height));
+        map.actors().forEach(actor => actor.view().do(bm => this.draw_transform(bm, actor.coordinates(), actor.angle())));
     }
 }
 
-export function get_bitmap(path: String): MaybeBitmap {
-    let result: MaybeBitmap = { bitmap: undefined };
+export function get_bitmap(path: String, then: (btmp: ImageBitmap) => ImageBitmap = (btmp) => btmp): MaybeBitmap {
+    let result = new MaybeBitmap();
     let img = new Image();
     img.onload = () => {
         createImageBitmap(img).then(bitmap => {
-            result.bitmap = bitmap;
+            result.bitmap = then(bitmap);
         })
     }
     img.src = "./resources/" + path;
