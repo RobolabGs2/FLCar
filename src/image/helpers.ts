@@ -10,13 +10,24 @@ export function extractImageData(img: ImageBitmap): ImageData {
     return ctx.getImageData(0, 0, img.width, img.height)
 }
 
-export function downloadBitmap(path: String): Promise<ImageBitmap> {
+export function downloadBitmap(path: string): Promise<ImageBitmap> {
     return new Promise<ImageBitmap>((resolve, reject) => {
         let img = new Image();
         img.onload = () => {
             resolve(createImageBitmap(img))
         };
         img.onerror = reject;
-        img.src = "./resources/" + path;
+        img.src = path;
     });
+}
+
+export function fileAsURL(file: File): Promise<string> {
+    return new Promise<string>(function (resolve, reject) {
+        const fileReader = new FileReader();
+        fileReader.addEventListener("load", (ev) => {
+            resolve(fileReader.result as string)
+        });
+        fileReader.addEventListener("error", reject);
+        fileReader.readAsDataURL(file);
+    })
 }
