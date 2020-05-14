@@ -17,7 +17,7 @@ export class BlankCar implements DrawableActor, PhisicsActor {
     public constructor() {
         this._view =  get_bitmap("car.png");
         this.angle = 0;
-        this.coordinates = { x: 500, y: 500 };
+        this.coordinates = { x: 0, y: 0 };
         this.speed = 0;
         this.necessary_speed = 10;
         this.wheel_angle = 1;
