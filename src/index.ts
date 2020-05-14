@@ -1,22 +1,27 @@
 import {Drawer} from "./graphics/drawer";
-import {BlankCar, BlankMap} from "./base/entities";
-import {downloadBitmap} from "./image/helpers";
-import {Point} from "./base/geometry";
+import {downloadBitmap, fileAsURL} from "./image/helpers";
+import {Simulator} from "./simulator";
 
-let canvas = document.getElementById('main') as HTMLCanvasElement;
-let drawer = new Drawer(canvas);
-Promise.all(["map.png", "car.png"].map(downloadBitmap))
-    .then(function ([mapBitmap, carBitmap]) {
-        let map = new BlankMap(mapBitmap, new BlankCar(carBitmap));
-        map.car.coordinates.x = 500;
-        map.car.coordinates.y = 500;
-        setInterval(() => {
-            map.car.angle += 0.05;
-            map.car.coordinates.x += Math.sin(map.car.angle * 10);
-            map.car.coordinates.y += Math.cos(map.car.angle * 10);
-            drawer.draw(map);
-        }, 50);
+
+const canvas = document.getElementById('main') as HTMLCanvasElement;
+const drawer = new Drawer(canvas);
+const simulator = new Simulator(drawer);
+
+Promise.all(["map.png", "car.png"].map(src => downloadBitmap(`./resources/${src}`)))
+    .then(function ([map, car]) {
+        const settings = {map, car};
+        simulator.startSimulation(settings);
+        const form = document.getElementById("settings") as HTMLFormElement;
+        form.addEventListener("submit", ev => {
+            const fileInput = document.querySelector<HTMLInputElement>('input[type="file"]');
+            const maybeImg = fileInput?.files?.item(0);
+            if (maybeImg) {
+                fileAsURL(maybeImg).then(downloadBitmap).then(map => {
+                    settings.map = map;
+                    simulator.startSimulation(settings);
+                })
+            }
+            ev.preventDefault()
+        });
     });
-// (document.getElementById('test') as HTMLButtonElement).addEventListener('click', ev => console.log("TODO"));
-
 
