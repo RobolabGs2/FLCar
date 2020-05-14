@@ -2,7 +2,7 @@ import {Point} from "geometry";
 import {DrawableActor, DrawableMap} from "../graphics/drawer";
 import {PhisicsActor} from "../phisics/phisics";
 
-export class BlankCar implements DrawableActor, PhisicsActor {
+export class BlankCar implements DrawableActor {
     angle: number;
     coordinates: Point;
     speed: number;
@@ -11,7 +11,7 @@ export class BlankCar implements DrawableActor, PhisicsActor {
 
     public constructor(readonly view: ImageBitmap) {
         this.angle = 0;
-        this.coordinates = {x: 0, y: 0};
+        this.coordinates = new Point(500, 500);
         this.speed = 0;
         this.necessary_speed = 10;
         this.wheel_angle = 1;

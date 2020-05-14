@@ -1,4 +1,5 @@
-import {Point} from "base/geometry";
+import { IgnorePlugin } from "webpack";
+import { Point } from "../base/geometry";
 
 const MAP_WIDTH = 1000;
 
