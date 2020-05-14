@@ -35,8 +35,8 @@ export class PhisicsContext{
     }
 
     tick(dt: number){
-        var actors = this._map.actors();
-        for(var i = 0; i < actors.length; ++i){
+        const actors = this._map.actors();
+        for(let i = 0; i < actors.length; ++i){
             // var actor = actor[i];
         }
 
