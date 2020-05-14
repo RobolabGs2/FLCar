@@ -3,8 +3,6 @@ import { Point } from "../base/geometry";
 
 const MAP_WIDTH = 1000;
 
-export type MaybeBitmap = { bitmap: ImageBitmap | undefined };
-
 // Вообще говоря, любой нефоновый персонаж, в нашем частном случае -- машинка
 export interface DrawableActor {
     // Координаты центра
@@ -12,16 +10,16 @@ export interface DrawableActor {
 
     // Угол поворота с.м. pivot в рисовании на канвасе
     readonly angle: number,
-    
+
     // Как выглядит актор
-    view: () => MaybeBitmap
+    readonly view: ImageBitmap
 }
 
 // Всё, что должно рисовать
 export interface DrawableMap {
     // Фоновое изображение карты
-    stage: () => MaybeBitmap,
-    
+    readonly stage: ImageBitmap,
+
     // Все акторы, в частном случае -- одна машинка
     actors: () => Array<DrawableActor>
 }
@@ -44,33 +42,18 @@ export class Drawer {
         this._scale = this._canvas.width / MAP_WIDTH;
     }
 
+    public draw(map: DrawableMap) {
+        this._context.drawImage(map.stage, 0, 0, this._canvas.width, this._canvas.height);
+        map.actors().forEach(actor => this.draw_transform(actor.view, actor.coordinates, actor.angle));
+    }
+
     private draw_transform(img: ImageBitmap, coords: Point, angle: number) {
         this._context.save();
         this._context.scale(this._scale, this._scale);
         this._context.translate(coords.x, coords.y);
         this._context.rotate(angle);
-        this._context.drawImage(img, -img.width/2, -img.height/2);
+        this._context.drawImage(img, -img.width / 2, -img.height / 2);
         this._context.restore();
     }
-
-    public draw(map: DrawableMap) {
-        if (map.stage().bitmap)
-            this._context.drawImage(map.stage().bitmap as ImageBitmap, 0,0, this._canvas.width, this._canvas.height);
-        map.actors().forEach(actor => {
-            if (actor.view().bitmap)
-                this.draw_transform(actor.view().bitmap as ImageBitmap, actor.coordinates, actor.angle);
-        });
-    }
 }
 
-export function get_bitmap(path: String): MaybeBitmap {
-    let result: MaybeBitmap = { bitmap: undefined };
-    let img = new Image();
-    img.onload = () => {
-        createImageBitmap(img).then(bitmap => {
-            result.bitmap = bitmap;
-        })
-    }
-    img.src = "./resources/" + path;
-    return result;
-}
