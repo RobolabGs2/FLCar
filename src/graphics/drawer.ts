@@ -1,21 +1,17 @@
 import { IgnorePlugin } from "webpack";
+import { Point } from "base/geometry";
 
 const MAP_WIDTH = 1000;
-
-export type Point = {
-    x: number,
-    y: number
-}
 
 export type MaybeBitmap = { bitmap: ImageBitmap | undefined };
 
 // Вообще говоря, любой нефоновый персонаж, в нашем частном случае -- машинка
 export interface DrawableActor {
     // Координаты центра
-    coordinates: () => Point,
+    readonly coordinates: Point,
 
     // Угол поворота с.м. pivot в рисовании на канвасе
-    angle: () => number,
+    readonly angle: number,
     
     // Как выглядит актор
     view: () => MaybeBitmap
@@ -62,7 +58,7 @@ export class Drawer {
             this._context.drawImage(map.stage().bitmap as ImageBitmap, 0,0, this._canvas.width, this._canvas.height);
         map.actors().forEach(actor => {
             if (actor.view().bitmap)
-                this.draw_transform(actor.view().bitmap as ImageBitmap, actor.coordinates(), actor.angle());
+                this.draw_transform(actor.view().bitmap as ImageBitmap, actor.coordinates, actor.angle);
         });
     }
 }

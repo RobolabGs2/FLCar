@@ -1,27 +1,26 @@
-import {MaybeBitmap, Point, get_bitmap, DrawableMap, DrawableActor} from "./drawer";
+import { Point } from "geometry";
+import {MaybeBitmap, get_bitmap, DrawableMap, DrawableActor} from "../graphics/drawer";
+import {PhisicsActor, PhisicsMap} from "../phisics/phisics";
 
-
-export class BlankCar implements DrawableActor {
+export class BlankCar implements DrawableActor, PhisicsActor {
     private _view: MaybeBitmap;
-    public _angle : number;
-    public _coords : Point;
+    angle : number;
+    coordinates: Point;
+    speed: number;
+    necessary_speed: number;
+    wheel_angle: number;
 
     public view(): MaybeBitmap {
         return this._view;
     }
 
-    public coordinates(): Point {
-        return this._coords;
-    }
-
-    public angle(): number {
-        return this._angle;
-    }
-
     public constructor() {
         this._view =  get_bitmap("car.png");
-        this._angle = 0;
-        this._coords = { x: 500, y: 500 };
+        this.angle = 0;
+        this.coordinates = { x: 500, y: 500 };
+        this.speed = 0;
+        this.necessary_speed = 10;
+        this.wheel_angle = 1;
     }
 }
 
