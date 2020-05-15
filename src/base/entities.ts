@@ -1,7 +1,24 @@
 import {Point} from "./geometry";
 import {DrawableActor, DrawableMap} from "../graphics/drawer";
-import {PhisicsActor, PhisicsMap} from "../phisics/phisics";
+import {PhisicsActor, PhisicsMap, PhisicsSensor} from "../phisics/phisics";
 import {extractImageData} from "../image/helpers";
+
+export class BlankSensor implements PhisicsSensor{
+    //  Дальность измерения датчика
+    distance: number;
+
+    //  Угол поворота относительно машинки
+    angle: number;
+
+    //  Значение сенсора - расстояние до препятствия
+    value: number;
+
+    constructor(distance: number, angle: number){
+        this.value = 0;
+        this.distance = distance;
+        this.angle = angle;
+    }
+}
 
 export class BlankCar implements DrawableActor, PhisicsActor {
     angle: number;
@@ -9,6 +26,7 @@ export class BlankCar implements DrawableActor, PhisicsActor {
     speed: number;
     necessary_speed: number;
     wheel_angle: number;
+    sensors: Array<BlankSensor>;
 
     public constructor(readonly view: ImageBitmap) {
         this.angle = 0;
@@ -16,6 +34,7 @@ export class BlankCar implements DrawableActor, PhisicsActor {
         this.speed = 0;
         this.necessary_speed = 100;
         this.wheel_angle = 0.005;
+        this.sensors = [new BlankSensor(100, 0)]
     }
 
     public get height() {

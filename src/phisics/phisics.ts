@@ -23,6 +23,8 @@ export interface PhisicsActor{
     // ширина картинки
     readonly width: number;
     
+    // Массив сенсоров
+    sensors: Array<PhisicsSensor>;
 }
 
 export interface PhisicsMap{
@@ -33,6 +35,16 @@ export interface PhisicsMap{
     actors(): Array<PhisicsActor>;
 }
 
+export interface PhisicsSensor{
+    //  Дальность измерения датчика
+    readonly distance: number;
+
+    //  Угол поворота относительно машинки
+    readonly angle: number;
+
+    //  Значение сенсора - расстояние до препятствия
+    value: number;
+}
 
 export class PhisicsContext{
     private _map: PhisicsMap;
@@ -59,6 +71,21 @@ export class PhisicsContext{
         if(isNaN(b))
             return a;
         return Math.min(a, b);
+    }
+
+    private update_sensor(sensor: PhisicsSensor, start: Point, add_angle: number){
+        let angle = sensor.angle + add_angle;
+        let sin_a = Math.sin(angle);
+        let cos_a = Math.cos(angle);
+
+        for(let i = 0; i < sensor.distance; ++i)
+            if(this._map.is_barrier(start.add(new Point(-i * sin_a, i * cos_a)).round())){
+                sensor.value = i;
+                console.log(i);
+                return;
+            }
+        //  если ничего не увидели, делаем бесконечность(можно поменять)
+        sensor.value = Infinity;
     }
 
     tick(dt: number){
@@ -93,10 +120,10 @@ export class PhisicsContext{
             let a = actor.width / 2;
             let b = actor.height / 2;
             //  хардкодим перемножение матриц
-            let A1 = a * cos_a + b * sin_a;
-            let A2 = a * cos_a - b * sin_a;
-            let B1 = -a * sin_a + b * cos_a;
-            let B2 = -a * sin_a - b * cos_a;
+            let A1 = a * cos_a - b * sin_a;
+            let A2 = a * cos_a + b * sin_a;
+            let B1 = a * sin_a + b * cos_a;
+            let B2 = a * sin_a - b * cos_a;
             //  точки прямоугольника
             let points = [
                 new Point(A1, B1),
@@ -139,6 +166,10 @@ export class PhisicsContext{
                 }while(Math.abs(actor.necessary_speed) < 100);
                 actor.wheel_angle = (Math.random() - 0.5) / 30;
             }
+
+            actor.sensors.forEach(sensor =>
+                this.update_sensor(sensor, actor.coordinates, actor.angle));
+
         }
 
     }
