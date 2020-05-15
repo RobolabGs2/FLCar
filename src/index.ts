@@ -7,7 +7,7 @@ const canvas = document.getElementById('main') as HTMLCanvasElement;
 const drawer = new Drawer(canvas);
 const simulator = new Simulator(drawer);
 
-Promise.all(["map.png", "car.png"].map(src => downloadBitmap(`./resources/${src}`)))
+Promise.all(["map.png", "small_car.png"].map(src => downloadBitmap(`./resources/${src}`)))
     .then(function ([map, car]) {
         const settings = {map, car};
         simulator.startSimulation(settings);

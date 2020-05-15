@@ -42,7 +42,23 @@ export class PhisicsContext{
     }
 
     private line_x(p0: Point, p1: Point, y: number){
-        return (y - p0.y) * (p1.x - p0.x) / (p1.y - p0.y) + p0.y;
+        return (y - p0.y) * (p1.x - p0.x) / (p1.y - p0.y) + p0.x;
+    }
+
+    private my_max(a: number, b: number){
+        if(isNaN(a))
+            return b;
+        if(isNaN(b))
+            return a;
+        return Math.max(a, b);
+    }
+
+    private my_min(a: number, b: number){
+        if(isNaN(a))
+            return b;
+        if(isNaN(b))
+            return a;
+        return Math.min(a, b);
     }
 
     tick(dt: number){
@@ -81,19 +97,23 @@ export class PhisicsContext{
             let p_right = points[(num + 1) % 4].add(actor.coordinates);
             let p_down  = points[(num + 2) % 4].add(actor.coordinates);
             let p_left  = points[(num + 3) % 4].add(actor.coordinates);
-
             //  Собственно, циклик проверки коллизий
-            for(let y = Math.round(p_up.y); y < p_down.y; ++y)
+            for(let y = Math.round(p_down.y); y < p_up.y; ++y)
             {
-                let start = Math.max(this.line_x(p_down, p_left, y), this.line_x(p_left, p_up, y));
-                let finish = Math.min(this.line_x(p_down, p_right, y), this.line_x(p_right, p_up, y));
-                for(let x = start; x < finish; ++x)
+                let start = this.my_max(this.line_x(p_down, p_left, y), this.line_x(p_left, p_up, y));
+                let finish = this.my_min(this.line_x(p_down, p_right, y), this.line_x(p_right, p_up, y));
+                // console.log(y, start, finish);
+                for(let x = Math.round(start); x < finish; ++x)
+                {
+                    // console.log(x, y);
                     if(this._map.is_barrier(new Point(x, y)))
                     {
                         console.log("collision!!");
                         break;
                     }
+                }
             }
+            actor.coordinates.y += 20 * dt;
         }
 
     }
