@@ -22,8 +22,8 @@ export class BlankCar implements DrawableActor, PhisicsActor {
         this.angle = 0;
         this.coordinates = new Point(0, 0);
         this.speed = 0;
-        this.necessary_speed = 10;
-        this.wheel_angle = 1;
+        this.necessary_speed = 100;
+        this.wheel_angle = 0.005;
     }
 }
 

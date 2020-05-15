@@ -12,7 +12,7 @@ export interface PhisicsActor{
     speed: number;
 
     // Скорость, до которой надо бы разогнаться
-    readonly necessary_speed: number;
+    necessary_speed: number;
 
     // угол поворота колёс
     wheel_angle: number;
@@ -62,15 +62,36 @@ export class PhisicsContext{
     }
 
     tick(dt: number){
+        //  TODO ускорение, с которым разгоняется машинка, 
+        //  надо потом куда-то перетащить, в саму машинку, наверное
+        let acceleration = 100;
+        
         let actors = this._map.actors();
         for(let i = 0; i < actors.length; ++i){
             let actor = actors[i];
-
-            let a = actor.width / 2;
-            let b = actor.height / 2;
+    
             //  подобие матрицы поворота
             let sin_a = Math.sin(actor.angle);
             let cos_a = Math.cos(actor.angle);
+
+            //  сохраняем старую позицию и поворот что бы если что вернуться
+            let last_point = actor.coordinates;
+            let last_angle = actor.angle;
+            //  проеханное за такт расстояние
+            let dist = actor.speed * dt;
+            //  новая координата и поворот
+            actor.coordinates = actor.coordinates.add(new Point(-dist * sin_a, dist * cos_a));
+            actor.angle += actor.wheel_angle * dist; // TODO это пока заглушка, но, возможно, рабочая
+            // TODO расчитываем новую скорость, исходя из желаемой
+            if(actor.speed > actor.necessary_speed)
+                actor.speed -= acceleration * dt;
+            if(actor.speed < actor.necessary_speed)
+                actor.speed += acceleration * dt;
+
+            //  -- Коллизии -- //
+            //  длина и ширина для коллизий
+            let a = actor.width / 2;
+            let b = actor.height / 2;
             //  хардкодим перемножение матриц
             let A1 = a * cos_a + b * sin_a;
             let A2 = a * cos_a - b * sin_a;
@@ -84,12 +105,11 @@ export class PhisicsContext{
                 new Point(-A2, -B2),
             ]
             //  сортируем точки по часовой стрелки от верхней
-            let max = points[0].x;
+            let max = points[0].y;
             let num = 0;
             for(let j = 1; j < 4; ++j)
-                if(points[j].x > max)
-                {
-                    max = points[j].x;
+                if(points[j].y > max){
+                    max = points[j].y;
                     num = j;
                 }
             // точки, с правильным взаимным расположением и сдвигом
@@ -98,22 +118,27 @@ export class PhisicsContext{
             let p_down  = points[(num + 2) % 4].add(actor.coordinates);
             let p_left  = points[(num + 3) % 4].add(actor.coordinates);
             //  Собственно, циклик проверки коллизий
-            for(let y = Math.round(p_down.y); y < p_up.y; ++y)
-            {
+            let is_collision = false;
+            for(let y = Math.round(p_down.y); y < p_up.y && !is_collision; ++y){
                 let start = this.my_max(this.line_x(p_down, p_left, y), this.line_x(p_left, p_up, y));
                 let finish = this.my_min(this.line_x(p_down, p_right, y), this.line_x(p_right, p_up, y));
-                // console.log(y, start, finish);
-                for(let x = Math.round(start); x < finish; ++x)
-                {
-                    // console.log(x, y);
+
+                for(let x = Math.round(start); x < finish && !is_collision; ++x){
                     if(this._map.is_barrier(new Point(x, y)))
-                    {
-                        console.log("collision!!");
-                        break;
-                    }
+                        is_collision = true;
                 }
             }
-            actor.coordinates.y += 20 * dt;
+            //  если врезались, останавливаемся и возвращаем старые координаты
+            if(is_collision){
+                actor.coordinates = last_point;
+                actor.angle = last_angle;
+                actor.speed = 0;
+                // TODO задаю новые штуки для тестов, это должна делать логика
+                do{
+                    actor.necessary_speed = Math.random() * 400 - 200;
+                }while(Math.abs(actor.necessary_speed) < 100);
+                actor.wheel_angle = (Math.random() - 0.5) / 30;
+            }
         }
 
     }
