@@ -11,6 +11,9 @@ export interface LogicActor{
 
     // Массив сенсоров
     sensors: Array<LogicSensor>;
+
+    //  Сенсор направления на цель
+    target: LogicTargetSensor;
 }
 
 export interface LogicSensor{
@@ -22,6 +25,13 @@ export interface LogicSensor{
 
     //  Значение сенсора - расстояние до препятствия
     readonly value: number;
+}
+
+export interface LogicTargetSensor{
+    //  угол направления на цель в радианах
+    readonly angle: number;
+    //  расстояние до цели, в попугаях
+    readonly distance: number;
 }
 
 export interface LogicMap{
@@ -40,7 +50,7 @@ export class Logic{
         this._map.actors().forEach(actor => {
             //  тут надо управлять машинкой
             actor.necessary_speed = actor.sensors[0].value < 70 ? -50: 50;
-            actor.wheel_angle = actor.speed < 0 ? 0.01 : -0.002;
+            actor.wheel_angle = actor.speed < 0 ? 0.01 : actor.target.angle / 50;
         })
     }
 }

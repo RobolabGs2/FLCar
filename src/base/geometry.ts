@@ -7,6 +7,10 @@ export class Point {
         return new Point(p.x + this.x, p.y + this.y);
     }
 
+    public sub(p: Point){
+        return new Point(this.x - p.x, this.y - p.y);
+    }
+
     public round(){
         return new Point(Math.round(this.x), Math.round(this.y));
     }

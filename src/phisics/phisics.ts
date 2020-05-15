@@ -25,9 +25,15 @@ export interface PhisicsActor{
     
     // Массив сенсоров
     sensors: Array<PhisicsSensor>;
+
+    // Сенсор цели
+    target: PhisicsTargetSensor;
 }
 
 export interface PhisicsMap{
+    // Цель для машинок
+    readonly target: Point;
+
     // Возвращает true если в данной точке есть препятствие
     is_barrier(p: Point): boolean;
     
@@ -44,6 +50,13 @@ export interface PhisicsSensor{
 
     //  Значение сенсора - расстояние до препятствия
     value: number;
+}
+
+export interface PhisicsTargetSensor{
+    //  угол направления на цель в радианах
+    angle: number;
+    //  расстояние до цели, в попугаях
+    distance: number;
 }
 
 export class PhisicsContext{
@@ -81,11 +94,18 @@ export class PhisicsContext{
         for(let i = 0; i < sensor.distance; ++i)
             if(this._map.is_barrier(start.add(new Point(-i * sin_a, i * cos_a)).round())){
                 sensor.value = i;
-                console.log(i);
                 return;
             }
         //  если ничего не увидели, делаем бесконечность(можно поменять)
         sensor.value = Infinity;
+    }
+
+    private recorrect_angle(angle: number){
+        if(angle > Math.PI)
+            angle -= 2 * Math.PI;
+        if(angle < -Math.PI)
+            angle += 2 * Math.PI;
+        return angle;
     }
 
     tick(dt: number){
@@ -108,7 +128,7 @@ export class PhisicsContext{
             let dist = actor.speed * dt;
             //  новая координата и поворот
             actor.coordinates = actor.coordinates.add(new Point(-dist * sin_a, dist * cos_a));
-            actor.angle += actor.wheel_angle * dist; // TODO это пока заглушка, но, возможно, рабочая
+            actor.angle += this.recorrect_angle(actor.wheel_angle * dist); // TODO это пока заглушка, но, возможно, рабочая
             // TODO расчитываем новую скорость, исходя из желаемой
             if(actor.speed > actor.necessary_speed)
                 actor.speed -= acceleration * dt;
@@ -116,6 +136,7 @@ export class PhisicsContext{
                 actor.speed += acceleration * dt;
 
             //  -- Коллизии -- //
+
             //  длина и ширина для коллизий
             let a = actor.width / 2;
             let b = actor.height / 2;
@@ -163,10 +184,17 @@ export class PhisicsContext{
             }
 
             //  --  Сенсоры --  //
+
+            //  сенсоры дальности
             actor.sensors.forEach(sensor =>
                 this.update_sensor(sensor, actor.coordinates, actor.angle));
+            //  сенсор цели
+            let delta = this._map.target.sub(actor.coordinates);
+            actor.target.distance = Math.sqrt(delta.x * delta.x + delta.y * delta.y);
 
+            let acos = Math.acos(delta.y / actor.target.distance );
+            actor.target.angle = this.recorrect_angle(-Math.sign(delta.x) * acos - actor.angle);
+            console.log(actor.target.angle);
         }
-
     }
 }

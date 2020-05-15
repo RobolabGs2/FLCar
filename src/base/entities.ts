@@ -2,7 +2,7 @@ import {Point} from "./geometry";
 import {DrawableActor, DrawableMap} from "../graphics/drawer";
 import {PhisicsActor, PhisicsMap, PhisicsSensor} from "../phisics/phisics";
 import {extractImageData} from "../image/helpers";
-import { LogicActor, LogicSensor, LogicMap } from "../logic/logic";
+import { LogicActor, LogicSensor, LogicMap, LogicTargetSensor } from "../logic/logic";
 
 export class BlankSensor implements PhisicsSensor, LogicSensor{
     //  Дальность измерения датчика
@@ -21,6 +21,16 @@ export class BlankSensor implements PhisicsSensor, LogicSensor{
     }
 }
 
+export class TargetSensor implements LogicTargetSensor{
+    public angle: number;
+    public distance: number;
+
+    constructor(){
+        this.angle = 0;
+        this.distance = 0;
+    }
+}
+
 export class BlankCar implements DrawableActor, PhisicsActor, LogicActor {
     angle: number;
     coordinates: Point;
@@ -28,6 +38,7 @@ export class BlankCar implements DrawableActor, PhisicsActor, LogicActor {
     necessary_speed: number;
     wheel_angle: number;
     sensors: Array<BlankSensor>;
+    target: TargetSensor;
 
     public constructor(readonly view: ImageBitmap) {
         this.angle = 0;
@@ -36,6 +47,7 @@ export class BlankCar implements DrawableActor, PhisicsActor, LogicActor {
         this.necessary_speed = 100;
         this.wheel_angle = 0.005;
         this.sensors = [new BlankSensor(100, 0)]
+        this.target = new TargetSensor();
     }
 
     public get height() {
@@ -70,8 +82,11 @@ class PhysicsMap {
 }
 
 export class BlankMap extends PhysicsMap implements DrawableMap, PhisicsMap, LogicMap {
+    public target: Point;
+
     public constructor(readonly stage: ImageBitmap, public car: BlankCar) {
         super(extractImageData(stage))
+        this.target = new Point(0, 500);
     }
 
     public actors() {
