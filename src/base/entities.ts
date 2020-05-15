@@ -10,14 +10,6 @@ export class BlankCar implements DrawableActor, PhisicsActor {
     necessary_speed: number;
     wheel_angle: number;
 
-    public get height(){
-        return this.view.height;
-    }
-
-    public get width(){
-        return this.view.width;
-    }
-
     public constructor(readonly view: ImageBitmap) {
         this.angle = 0;
         this.coordinates = new Point(0, 0);
@@ -25,18 +17,35 @@ export class BlankCar implements DrawableActor, PhisicsActor {
         this.necessary_speed = 10;
         this.wheel_angle = 1;
     }
+
+    public get height() {
+        return this.view.height;
+    }
+
+    public get width() {
+        return this.view.width;
+    }
 }
 
 class PhysicsMap {
-    constructor(private img: ImageData) {
+    private readonly map: Uint8Array;
+    private readonly height: number;
+    private readonly width: number;
+
+    constructor(img: ImageData) {
+        this.height = img.height;
+        this.width = img.width;
+        this.map = new Uint8Array(img.height * img.width);
+        for (let i = 0; i < this.map.length; i++) {
+            this.map[i] = [0, 1, 2].map(j => img.data[4 * i + j]).reduce((a, b) => Math.min(a, b))
+        }
     }
 
     is_barrier(p: Point): boolean {
-        if (p.x < 0 || p.y < 0 || p.x > this.img.width || p.y > this.img.height) {
+        if (p.x < 0 || p.y < 0 || p.x > this.width || p.y > this.height) {
             return true
         }
-        let offset = (p.x + p.y * this.img.width) * 4;
-        return 255 !== [0, 1, 2].map(i => this.img.data[offset + i]).reduce((a, b) => Math.min(a, b))
+        return 255 !== this.map[p.x + p.y * this.width]
     }
 }
 
