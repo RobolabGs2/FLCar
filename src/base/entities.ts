@@ -27,17 +27,22 @@ export class BlankCar implements DrawableActor, PhisicsActor {
     }
 }
 
-export class BlankMap implements DrawableMap, PhisicsMap {
-    public constructor(readonly stage: ImageBitmap, public car: BlankCar) {
+class PhysicsMap {
+    constructor(private img: ImageData) {
     }
 
-    is_barrier(p: Point): boolean{
-        let img = extractImageData(this.stage);
-        if (p.x < 0 || p.y < 0 || p.x > img.width || p.y > img.height) {
+    is_barrier(p: Point): boolean {
+        if (p.x < 0 || p.y < 0 || p.x > this.img.width || p.y > this.img.height) {
             return true
         }
-        let offset = (p.x + p.y * img.width) * 4;
-        return 255 !== [0, 1, 2].map(i => img.data[offset + i]).reduce((a, b) => Math.min(a, b))
+        let offset = (p.x + p.y * this.img.width) * 4;
+        return 255 !== [0, 1, 2].map(i => this.img.data[offset + i]).reduce((a, b) => Math.min(a, b))
+    }
+}
+
+export class BlankMap extends PhysicsMap implements DrawableMap, PhisicsMap {
+    public constructor(readonly stage: ImageBitmap, public car: BlankCar) {
+        super(extractImageData(stage))
     }
 
     public actors() {
