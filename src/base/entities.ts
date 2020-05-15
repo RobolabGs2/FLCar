@@ -2,8 +2,9 @@ import {Point} from "./geometry";
 import {DrawableActor, DrawableMap} from "../graphics/drawer";
 import {PhisicsActor, PhisicsMap, PhisicsSensor} from "../phisics/phisics";
 import {extractImageData} from "../image/helpers";
+import { LogicActor, LogicSensor, LogicMap } from "../logic/logic";
 
-export class BlankSensor implements PhisicsSensor{
+export class BlankSensor implements PhisicsSensor, LogicSensor{
     //  Дальность измерения датчика
     distance: number;
 
@@ -20,7 +21,7 @@ export class BlankSensor implements PhisicsSensor{
     }
 }
 
-export class BlankCar implements DrawableActor, PhisicsActor {
+export class BlankCar implements DrawableActor, PhisicsActor, LogicActor {
     angle: number;
     coordinates: Point;
     speed: number;
@@ -68,7 +69,7 @@ class PhysicsMap {
     }
 }
 
-export class BlankMap extends PhysicsMap implements DrawableMap, PhisicsMap {
+export class BlankMap extends PhysicsMap implements DrawableMap, PhisicsMap, LogicMap {
     public constructor(readonly stage: ImageBitmap, public car: BlankCar) {
         super(extractImageData(stage))
     }

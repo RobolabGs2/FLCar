@@ -160,13 +160,9 @@ export class PhisicsContext{
                 actor.coordinates = last_point;
                 actor.angle = last_angle;
                 actor.speed = 0;
-                // TODO задаю новые штуки для тестов, это должна делать логика
-                do{
-                    actor.necessary_speed = Math.random() * 400 - 200;
-                }while(Math.abs(actor.necessary_speed) < 100);
-                actor.wheel_angle = (Math.random() - 0.5) / 30;
             }
 
+            //  --  Сенсоры --  //
             actor.sensors.forEach(sensor =>
                 this.update_sensor(sensor, actor.coordinates, actor.angle));
 
