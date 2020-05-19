@@ -1,10 +1,10 @@
 import {Point} from "./geometry";
-import {DrawableActor, DrawableMap} from "../graphics/drawer";
+import {DrawableActor, DrawableMap, DrawableSensor, DrawableTargetSensor} from "../graphics/drawer";
 import {PhisicsActor, PhisicsMap, PhisicsSensor} from "../phisics/phisics";
 import {extractImageData} from "../image/helpers";
 import { LogicActor, LogicSensor, LogicMap, LogicTargetSensor } from "../logic/logic";
 
-export class BlankSensor implements PhisicsSensor, LogicSensor{
+export class BlankSensor implements PhisicsSensor, LogicSensor, DrawableSensor {
     //  Дальность измерения датчика
     distance: number;
 
@@ -21,7 +21,7 @@ export class BlankSensor implements PhisicsSensor, LogicSensor{
     }
 }
 
-export class TargetSensor implements LogicTargetSensor{
+export class TargetSensor implements LogicTargetSensor, DrawableTargetSensor {
     public angle: number;
     public distance: number;
 
