@@ -45,8 +45,12 @@ export class BlankCar implements DrawableActor, PhisicsActor, LogicActor {
         this.coordinates = new Point(0, 0);
         this.speed = 0;
         this.necessary_speed = 100;
-        this.wheel_angle = 0.005;
-        this.sensors = [new BlankSensor(100, 0)]
+        this.wheel_angle = 0;
+        this.sensors = [
+            new BlankSensor(100, Math.PI/4),
+            new BlankSensor(100, 0),
+            new BlankSensor(100, -Math.PI/4)
+        ];
         this.target = new TargetSensor();
     }
 
@@ -86,7 +90,7 @@ export class BlankMap extends PhysicsMap implements DrawableMap, PhisicsMap, Log
 
     public constructor(readonly stage: ImageBitmap, public car: BlankCar) {
         super(extractImageData(stage))
-        this.target = new Point(0, 500);
+        this.target = new Point(100, 200);
     }
 
     public actors() {

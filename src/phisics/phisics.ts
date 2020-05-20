@@ -22,7 +22,7 @@ export interface PhisicsActor{
 
     // ширина картинки
     readonly width: number;
-    
+
     // Массив сенсоров
     sensors: Array<PhisicsSensor>;
 
@@ -36,7 +36,7 @@ export interface PhisicsMap{
 
     // Возвращает true если в данной точке есть препятствие
     is_barrier(p: Point): boolean;
-    
+
     // Все акторы
     actors(): Array<PhisicsActor>;
 }
@@ -109,14 +109,14 @@ export class PhisicsContext{
     }
 
     tick(dt: number){
-        //  TODO ускорение, с которым разгоняется машинка, 
+        //  TODO ускорение, с которым разгоняется машинка,
         //  надо потом куда-то перетащить, в саму машинку, наверное
         let acceleration = 100;
-        
+
         let actors = this._map.actors();
         for(let i = 0; i < actors.length; ++i){
             let actor = actors[i];
-    
+
             //  подобие матрицы поворота
             let sin_a = Math.sin(actor.angle);
             let cos_a = Math.cos(actor.angle);
@@ -194,7 +194,7 @@ export class PhisicsContext{
 
             let acos = Math.acos(delta.y / actor.target.distance );
             actor.target.angle = this.recorrect_angle(-Math.sign(delta.x) * acos - actor.angle);
-            console.log(actor.target.angle);
+            // console.log(actor.target.angle);
         }
     }
 }

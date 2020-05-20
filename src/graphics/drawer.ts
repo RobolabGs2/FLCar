@@ -72,7 +72,7 @@ export class Drawer {
         this._context.drawImage(map.stage, 0, 0, this._canvas.width, this._canvas.height);
         map.actors().forEach(actor => {
             this.draw_transform(actor.view, actor.coordinates, actor.angle);
-            actor.sensors.forEach(sensor => 
+            actor.sensors.forEach(sensor =>
                 this.in_transform(actor.coordinates, actor.angle + sensor.angle, (context) => {
                     context.beginPath();
                     context.moveTo(0, 0);

@@ -1,17 +1,14 @@
+import { evaluateSpeed } from "./logic_methods";
 
 export interface LogicActor{
     // Фактическая скорость
     readonly speed: number;
-
     // Скорость, до которой надо бы разогнаться
     necessary_speed: number;
-
     // угол поворота колёс
     wheel_angle: number;
-
     // Массив сенсоров
     sensors: Array<LogicSensor>;
-
     //  Сенсор направления на цель
     target: LogicTargetSensor;
 }
@@ -19,10 +16,8 @@ export interface LogicActor{
 export interface LogicSensor{
     //  Дальность измерения датчика
     readonly distance: number;
-
     //  Угол поворота относительно машинки
     readonly angle: number;
-
     //  Значение сенсора - расстояние до препятствия
     readonly value: number;
 }
@@ -44,13 +39,21 @@ export class Logic{
 
     constructor(map: LogicMap) {
         this._map = map;
+        evaluateSpeed(100);
     }
 
     tick(dt: number){
         this._map.actors().forEach(actor => {
-            //  тут надо управлять машинкой
-            actor.necessary_speed = actor.sensors[0].value < 70 ? -50: 50;
-            actor.wheel_angle = actor.speed < 0 ? 0.01 : actor.target.angle / 50;
+            var desired_angle = actor.target.angle;
+            // console.log(evaluateSpeed(actor.sensors[1].value));
+            // console.log(desired_angle);
+            if (actor.target.distance < 50)
+                actor.necessary_speed = 10;
+            else
+                actor.necessary_speed = actor.sensors[1].value < 30 ? -50: 50;
+            actor.wheel_angle = actor.target.angle / 2;
+            // actor.wheel_angle = actor.speed < 0 ? 0.01 : actor.target.angle / 50;
+            // actor.wheel_angle = desired_angle;
         })
     }
 }
