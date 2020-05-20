@@ -1,4 +1,4 @@
-import { evaluateSpeed } from "./logic_methods";
+import { evaluateSpeed, evalFuzzySpeed } from "./logic_methods";
 
 export interface LogicActor{
     // Фактическая скорость
@@ -39,14 +39,13 @@ export class Logic{
 
     constructor(map: LogicMap) {
         this._map = map;
-        evaluateSpeed(100);
     }
 
     tick(dt: number){
         this._map.actors().forEach(actor => {
             var desired_angle = actor.target.angle;
             // console.log(evaluateSpeed(actor.sensors[1].value));
-            // console.log(desired_angle);
+            evalFuzzySpeed(actor.sensors.map((val) => val.value));
             if (actor.target.distance < 50)
                 actor.necessary_speed = 10;
             else

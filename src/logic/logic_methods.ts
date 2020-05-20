@@ -16,6 +16,11 @@ interface InDistVal {
     value: number
 }
 
+interface OutSpeedVal {
+    speed: OutSpeed,
+    value: number
+}
+
 class MembershipFunc {
     private intervals: number[];
 
@@ -25,7 +30,7 @@ class MembershipFunc {
 
     eval(val: number) {
         let intervals = this.intervals;
-        if (val < intervals[0] || val >= intervals[3])
+        if (val < intervals[0] || val > intervals[3])
             return 0;
         if (val < intervals[1])
             return (val - intervals[0]) / (intervals[1] - intervals[0]);
@@ -34,7 +39,6 @@ class MembershipFunc {
         return 1;
     }
 }
-
         //            |______   _____   _____   ____
         //            |      \ /     \ /     \ /
         //            |       ╳       ╳       ╳
@@ -59,7 +63,7 @@ class LogicRule {
         this.consequent = consequent;
     }
 
-    apply(inputs: InDistVal[][]) {
+    apply(inputs: InDistVal[][]) : OutSpeedVal | null {
         let result = 1;
         for (let i = 0; i < 3; i++) {
             if (this.antecedent[i] == null)
@@ -70,11 +74,20 @@ class LogicRule {
             if (temp.value < result)
                 result = temp.value;
         }
-        return result;
+        return {
+            speed: this.consequent,
+            value: result
+        };
     }
 }
 
-export function evalFuzzySpeed(distance: number) {
+var logic_rules: LogicRule[] = [
+    new LogicRule([null, InDistance.Far, null], OutSpeed.Fast),
+    new LogicRule([null, InDistance.Medium, null], OutSpeed.Medium),
+    new LogicRule([null, InDistance.Close, null], OutSpeed.Slow)
+];
+
+export function evalFuzzyDist(distance: number) : InDistVal[] {
     let result: InDistVal[] = [];
     for(var i = 0; i < 4; i++) {
         let temp = distance_funcs.get(i)!.eval(distance)
@@ -84,6 +97,17 @@ export function evalFuzzySpeed(distance: number) {
                 value: temp
             });
     }
+    return result;
+}
 
+export function evalFuzzySpeed(sensors_distance: number[]) : OutSpeedVal[] {
+    let fuzzy_distances = sensors_distance.map(evalFuzzyDist);
+    let result: OutSpeedVal[] = [];
+    for (var rule of logic_rules) {
+        let temp = rule.apply(fuzzy_distances);
+        if (temp != null)
+            result.push(temp);
+    }
+    console.log(OutSpeed[result[0].speed], result[0].value);
     return result;
 }
