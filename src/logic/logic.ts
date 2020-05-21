@@ -1,5 +1,5 @@
-import { evaluateSpeed, evalFuzzySpeed } from "./logic_methods";
-
+import { debug_div } from "../base/helpers";
+import { LogicStatus } from "./logic_status";
 export interface LogicActor{
     // Фактическая скорость
     readonly speed: number;
@@ -11,6 +11,8 @@ export interface LogicActor{
     sensors: Array<LogicSensor>;
     //  Сенсор направления на цель
     target: LogicTargetSensor;
+    //  Состояние машинки
+    status: LogicStatus;
 }
 
 export interface LogicSensor{
@@ -43,9 +45,11 @@ export class Logic{
 
     tick(dt: number){
         this._map.actors().forEach(actor => {
-            var desired_angle = actor.target.angle;
-            // console.log(evaluateSpeed(actor.sensors[1].value));
-            evalFuzzySpeed(actor.sensors.map((val) => val.value));
+            let sensor_values = actor.sensors.map((val) => val.value);
+            debug_div.set(sensor_values.toString());
+            debug_div.new_line();
+            actor.status.update(sensor_values);
+
             if (actor.target.distance < 50)
                 actor.necessary_speed = 10;
             else
