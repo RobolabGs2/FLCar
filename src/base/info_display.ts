@@ -1,4 +1,4 @@
-import { FuzzySensor, fipToStr, FuzzyOutParam, fopToStr } from "../logic/logic_methods";
+import { FuzzySensor, FuzzyOutParam, fip_to_str, fop_to_str } from "../logic/logic_methods";
 
 export class InfoDisplay {
   private div_sensors_distance: HTMLElement;
@@ -27,7 +27,7 @@ export class InfoDisplay {
       let elem = elems.item(i)!;
       let str = "";
       sensors_fuzzy[i].values.forEach(element => {
-          str += `<span>${fipToStr(element)}<span>`;
+          str += `<span>${fip_to_str(element)}<span>`;
       });
       elem.innerHTML = str;
     }
@@ -36,7 +36,7 @@ export class InfoDisplay {
   print_fuzzy_speed(fuzzy_speeds: FuzzyOutParam[]) {
     let str = "";
     for (let speed of fuzzy_speeds) {
-      str += `<span>${fopToStr(speed)}</span>`;
+      str += `<span>${fop_to_str(speed)}</span>`;
     }
     this.div_fuzzy_speed.innerHTML = str;
   }
@@ -44,7 +44,7 @@ export class InfoDisplay {
   print_fuzzy_turn(fuzzy_turns: FuzzyOutParam[]) {
     let str = "";
     for (let turn of fuzzy_turns) {
-      str += `<span>${fopToStr(turn)}</span>`;
+      str += `<span>${fop_to_str(turn)}</span>`;
     }
     this.div_fuzzy_turn.innerHTML = str;
   }

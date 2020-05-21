@@ -1,5 +1,3 @@
-import { LOGIC_RULES } from "./logic_rule";
-
 export enum InDistance {
     VeryClose,
     Close,
@@ -8,6 +6,7 @@ export enum InDistance {
 }
 
 export enum OutParam {
+    VerySlow,
     Slow,
     Medium,
     Fast,
@@ -36,11 +35,12 @@ export interface FuzzyOutParam {
     value: number
 }
 
-export function fipToStr(val: FuzzyInDist) {
+// Хуже названияне придумать
+export function fip_to_str(val: FuzzyInDist) {
     return `${InDistance[val.distance]}:${val.value}`;
 }
 
-export function fopToStr(val: FuzzyOutParam) {
+export function fop_to_str(val: FuzzyOutParam) {
     return `${OutParam[val.param]}:${val.value}`;
 }
 
@@ -63,11 +63,11 @@ class MembershipFunc {
         return 1;
     }
 }
-        //            |______   _____   _____   ____
-        //            |      \ /     \ /     \ /
-        //            |       ╳       ╳       ╳
-        //            |      / \     / \     / \
-        //            0__1  2   3   4   5   6   7
+            //            |______   _____   _____   ____
+            //            |      \ /     \ /     \ /
+            //            |       ╳       ╳       ╳
+            //            |      / \     / \     / \
+            //            0__1  2   3   4   5   6   7
 var distance_intervals = [0, 0, 10, 20, 30, 40, 50, 60, Infinity, Infinity];
 
 var distance_funcs = new Map<InDistance, MembershipFunc>();
@@ -77,7 +77,7 @@ for (let i = 0; i < 4; i++) {
 }
 
 // Перевод расстояния в нечеткую переменную
-export function evalFuzzySensor(distance: number) : FuzzySensor {
+export function eval_fuzzy_sensor(distance: number) : FuzzySensor {
     let result = { values: [] } as FuzzySensor;
     for(var i = 0; i < 4; i++) {
         let temp = distance_funcs.get(i)!.eval(distance)
@@ -88,5 +88,17 @@ export function evalFuzzySensor(distance: number) : FuzzySensor {
             });
     }
     return result;
+}
+
+            //          |     ____   _____   _____
+            //          |\   /    \ /     \ /
+            //          |  ╳       ╳       ╳
+            //          |/   \    / \     / \
+            //         012    3  4   5   6   7
+var speed_intervals = [0,0,0, 5, 10, 15, 20, 25, Infinity, Infinity]
+var speed_funcs = new Map<OutParam, MembershipFunc>();
+for (let i = 0; i < 4; i++) {
+    let arr = speed_intervals.slice(2*i, 2*i + 4);
+    speed_funcs.set(i, new MembershipFunc(arr));
 }
 

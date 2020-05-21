@@ -1,5 +1,5 @@
 import { info_display } from "../base/info_display";
-import { evalFuzzySensor, FuzzySensor, FuzzyOutParam, is_speed, fopToStr, fipToStr } from "./logic_methods";
+import { eval_fuzzy_sensor, FuzzySensor, FuzzyOutParam, is_speed, fopToStr, fipToStr } from "./logic_methods";
 import { LOGIC_RULES } from "./logic_rule";
 
 export class LogicStatus {
@@ -10,8 +10,8 @@ export class LogicStatus {
     constructor() {}
 
     public update(sensor_values: number[]) {
-        this.fuzzy_inputs = sensor_values.map(evalFuzzySensor);
-        this.evalFuzzyOutParams();
+        this.fuzzy_inputs = sensor_values.map(eval_fuzzy_sensor);
+        this.eval_fuzzy_out_params();
         this.print_info();
     }
 
@@ -20,7 +20,7 @@ export class LogicStatus {
         this.fuzzy_turn = [];
     }
 
-    private evalFuzzyOutParams() {
+    private eval_fuzzy_out_params() {
         this.reset_outputs();
         for (let rule of LOGIC_RULES) {
             let temp = rule.apply(this.fuzzy_inputs);
