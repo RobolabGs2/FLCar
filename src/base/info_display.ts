@@ -1,4 +1,4 @@
-import {fipToStr, FuzzyOutParam, FuzzySensor, InDistance, is_speed, OutParam} from "../logic/logic_methods";
+import { FuzzyOutParam, FuzzySensor, InDistance, is_speed, OutParam} from "../logic/logic_methods";
 import "./info_dispaly.css"
 
 export class InfoDisplay {
