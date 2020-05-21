@@ -1,4 +1,4 @@
-import { debug_div } from "../base/helpers";
+import { info_display } from "../base/info_display";
 import { evalFuzzySensor, FuzzySensor, FuzzyOutParam, is_speed, fopToStr, fipToStr } from "./logic_methods";
 import { LOGIC_RULES } from "./logic_rule";
 
@@ -29,27 +29,13 @@ export class LogicStatus {
                     this.fuzzy_speed.push(temp);
                 else
                     this.fuzzy_turn.push(temp);
-                // debug_div.add(fopToStr(temp));
             }
         }
     }
 
     private print_info() {
-        this.fuzzy_inputs.forEach((sensor) => {
-            let str = "[";
-            sensor.values.forEach(element => {
-                str += `${fipToStr(element)} `;
-            });
-            str += ']';
-            debug_div.add(str);
-        });
-        debug_div.new_line();
-        this.fuzzy_speed.forEach((value) => {
-            debug_div.add(fopToStr(value));
-        });
-        debug_div.new_line();
-        this.fuzzy_turn.forEach((value) => {
-            debug_div.add(fopToStr(value));
-        });
+        info_display.print_sensors_fuzzy(this.fuzzy_inputs);
+        info_display.print_fuzzy_speed(this.fuzzy_speed);
+        info_display.print_fuzzy_turn(this.fuzzy_turn);
     }
 }

@@ -1,4 +1,4 @@
-import { debug_div } from "../base/helpers";
+import { info_display } from "../base/info_display";
 import { LogicStatus } from "./logic_status";
 export interface LogicActor{
     // Фактическая скорость
@@ -46,8 +46,7 @@ export class Logic{
     tick(dt: number){
         this._map.actors().forEach(actor => {
             let sensor_values = actor.sensors.map((val) => val.value);
-            debug_div.set(sensor_values.toString());
-            debug_div.new_line();
+            info_display.print_sensors_distance(sensor_values);
             actor.status.update(sensor_values);
 
             if (actor.target.distance < 50)
