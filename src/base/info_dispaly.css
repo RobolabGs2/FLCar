@@ -1,0 +1,32 @@
+#car-info {
+    margin: 4px;
+    padding: 4px;
+    font-family: monospace;
+    font-size: large;
+}
+
+#car-info > section {
+    display: flex;
+    height: 1em;
+    padding: 4px;
+    border-bottom: solid 1px black;
+    justify-content: space-around;
+}
+
+.outparams {
+    display: flex;
+}
+
+.outparams > article {
+    margin-right: 4px;
+    display: flex;
+}
+
+.outparams > article > header::after {
+    content: ":";
+}
+
+.outparams > article > section {
+    width: 2rem;
+    margin-left: 2px;
+}
