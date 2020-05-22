@@ -6,24 +6,16 @@
 <body>
     <canvas id="main" width="500" height="500"></canvas>
 
-    <section id="car-info">
-        <div id="sensors-distance">
-            <span class="sensor-dist"></span>
-            <span class="sensor-dist"></span>
-            <span class="sensor-dist"></span>
-        </div>
-        <div id="sensors-fuzzy">
-            <span class="sensor-fuzzy"></span>
-            <span class="sensor-fuzzy"></span>
-            <span class="sensor-fuzzy"></span>
-        </div>
-        <div id="fuzzy-speed">
-
-        </div>
-        <div id="fuzzy-turn">
-
-        </div>
-    </section>
+    <article id="car-info">
+        <section id="sensors-distance">
+            <section class="sensor-dist"></section>
+            <section class="sensor-dist"></section>
+            <section class="sensor-dist"></section>
+        </section>
+        <section id="sensors-fuzzy"></section>
+        <section id="fuzzy-speed" class="outparams"></section>
+        <section id="fuzzy-turn" class="outparams"></section>
+    </article>
 
     <form id="settings">
         <input type="file" required/>
