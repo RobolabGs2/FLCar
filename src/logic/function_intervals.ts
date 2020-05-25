@@ -8,12 +8,13 @@ export class FunctionIntervals {
   turn: number[];
 
   constructor() {
+    const range = 100;
     //               |______   _____   _____   ____
     //               |      \ /     \ /     \ /
     //               |       ╳       ╳       ╳
     //               |      / \     / \     / \
     //               0__1  2   3   4   5   6   7
-    this.distance = [0, 0, 10, 20, 30, 40, 50, 60, Infinity, Infinity];
+    this.distance = [0, 0, range*(1/6), range*(2/6), range*(3/6), range*(4/6), range*(5/6), range, Infinity, Infinity];
 
 
     //              ____               ____
