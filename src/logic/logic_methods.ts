@@ -6,10 +6,10 @@ export enum InParam {
     Medium,
     Far,
 
-    StrongLeft,
-    Left,
-    Right,
-    StrongRight,
+    TStrongLeft,
+    TLeft,
+    TRight,
+    TStrongRight,
 
     TClose,
     TFar
