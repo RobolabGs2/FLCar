@@ -31,6 +31,11 @@ export enum OutParam {
 export function is_speed(val: OutParam): boolean {
     return val < OutParam.StrongLeft;
 }
+
+export function is_target(val: InParam): boolean {
+    return val >= InParam.TStrongLeft;
+}
+
 export interface FuzzyInParam {
     distance: InParam,
     value: number

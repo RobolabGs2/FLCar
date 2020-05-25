@@ -59,7 +59,7 @@ export class LogicStatus {
     }
 
     private print_info() {
-        // info_display.print_sensors_fuzzy(this.fuzzy_inputs);
+        info_display.print_sensors_fuzzy(this.fuzzy_inputs);
         info_display.print_fuzzy_speed(this.fuzzy_speed);
         info_display.print_fuzzy_turn(this.fuzzy_turn);
     }
