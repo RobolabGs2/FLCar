@@ -69,12 +69,14 @@ class MembershipFunc {
         return val * (this.intervals[2] - this.intervals[3]) + this.intervals[3];
     }
 }
+//required sensors distance, setting them to lower will cause troubles
+const range = 100;
             //            |______   _____   _____   ____
             //            |      \ /     \ /     \ /
             //            |       ╳       ╳       ╳
             //            |      / \     / \     / \
             //            0__1  2   3   4   5   6   7
-var distance_intervals = [0, 0, 10, 20, 30, 40, 50, 60, Infinity, Infinity];
+var distance_intervals = [0, 0, range*(1/6), range*(2/6), range*(3/6), range*(4/6), range*(5/6), range, Infinity, Infinity];
 
 var distance_funcs = new Map<InDistance, MembershipFunc>();
 for (let i = 0; i < 4; i++) {
