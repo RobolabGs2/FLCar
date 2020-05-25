@@ -19,7 +19,7 @@ export enum OutParam {
 
 // Определение отношения парамтра к параметру скорости или поворота
 export function is_speed(val: OutParam): boolean {
-    return val < OutParam.Left;
+    return val < OutParam.StrongLeft;
 }
 export interface FuzzyInDist {
     distance: InDistance,
@@ -124,7 +124,7 @@ var pi = Math.PI;
             //             /\   /|\   /\
             //            /  \ / | \ /  \
             //           1    2     3    4
-var turn_intervals =  [-3*pi/4, -3*pi/4, -3*pi/4, -pi/4, pi/4, pi/4, pi/4, 3*pi/4, 3*pi/4, 3*pi/4]
+var turn_intervals =  [-3*pi/12, -3*pi/12, -3*pi/12, -pi/12, pi/12, pi/12, pi/12, 3*pi/12, 3*pi/12, 3*pi/12]
 var output_funcs = new Map<OutParam, MembershipFunc>();
 
 for (let i = 0; i < 4; i++) {
