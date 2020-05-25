@@ -34,6 +34,14 @@ export const LOGIC_RULES: LogicRule[] = [
   new LogicRule([null, InDistance.Medium, null], OutParam.Medium),
   new LogicRule([null, InDistance.Close, null], OutParam.Slow),
   new LogicRule([null, InDistance.VeryClose, null], OutParam.VerySlow),
-  new LogicRule([null, InDistance.Close, InDistance.Close], OutParam.Left),
-  new LogicRule([InDistance.Close, InDistance.Close, null], OutParam.Right)
+
+  new LogicRule([null, null, InDistance.Close], OutParam.Left),
+  new LogicRule([InDistance.Far, InDistance.Medium, InDistance.Medium], OutParam.Left),
+  new LogicRule([InDistance.Medium, InDistance.Close, InDistance.Close], OutParam.StrongLeft),
+  new LogicRule([InDistance.Close, InDistance.VeryClose, InDistance.VeryClose], OutParam.StrongLeft),
+
+  new LogicRule([InDistance.Close, null, null], OutParam.Right),
+  new LogicRule([InDistance.Medium, InDistance.Medium, InDistance.Far], OutParam.Right),
+  new LogicRule([InDistance.Close, InDistance.Close, InDistance.Medium], OutParam.StrongRight),
+  new LogicRule([InDistance.VeryClose, InDistance.VeryClose, InDistance.Close], OutParam.StrongRight),
 ];
