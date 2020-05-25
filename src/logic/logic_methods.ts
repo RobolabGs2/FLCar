@@ -35,15 +35,6 @@ export interface FuzzyOutParam {
     value: number
 }
 
-// Хуже названияне придумать
-export function fip_to_str(val: FuzzyInDist) {
-    return `${InDistance[val.distance]}:${val.value}`;
-}
-
-export function fop_to_str(val: FuzzyOutParam) {
-    return `${OutParam[val.param]}:${val.value}`;
-}
-
 // Класс функции, вычисляющей принадлежность классу
 class MembershipFunc {
     private intervals: number[];
@@ -54,21 +45,13 @@ class MembershipFunc {
 
     eval(val: number): number {
         let ints = this.intervals;
-        if (this.excludes(val))
+        if (val < ints[0] || val > ints[3])
             return 0;
         if (val < ints[1])
             return (val - ints[0]) / (ints[1] - ints[0]);
         if (val > ints[2])
             return (val - ints[3]) / (ints[2] - ints[3]);
         return 1;
-    }
-
-    includes(val: number): boolean {
-        return val >= this.intervals[0] && val <= this.intervals[3];
-    }
-
-    excludes(val: number): boolean {
-        return val < this.intervals[0] || val > this.intervals[3];
     }
 
     intervals_sliced(top_val: number): number[] {
@@ -136,8 +119,6 @@ for (let i = 0; i < 4; i++) {
     let arr = turn_intervals.slice(2*i, 2*i + 4);
     output_funcs.set(i + 4, new MembershipFunc(arr));
 }
-
-console.log(output_funcs.get(OutParam.StrongLeft)!);
 interface Point {
     x: number,
     y: number
@@ -206,17 +187,3 @@ export function  eval_params(points: Point[]) {
     }
     return (sum2 / sum1) / 3;
 }
-
-// let ins: FuzzyOutParam[] = [
-//     {
-//         param: OutParam.Slow,
-//         value: 0.6
-//     },
-//     {
-//         param: OutParam.Medium,
-//         value: 0.6
-//     }
-// ];
-// let points = merge_params(ins);
-// console.log(points);
-// console.log(eval_params(points));
