@@ -6,6 +6,7 @@ export class FunctionIntervals {
   target_dist: number[];
   speed: number[];
   turn: number[];
+  //Dependence number for converting distances, defines 'far' dist
   range = 100;
 
   constructor() {

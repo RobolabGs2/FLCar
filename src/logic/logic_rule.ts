@@ -32,16 +32,19 @@ export class LogicRule {
 }
 
 export const LOGIC_RULES: LogicRule[] = [
+  //Speed rules
   new LogicRule([null, InParam.Far, null, null, null], OutParam.Fast),
   new LogicRule([null, InParam.Medium, null, null, null], OutParam.Medium),
   new LogicRule([null, InParam.Close, null, null, null], OutParam.Slow),
   new LogicRule([null, InParam.VeryClose, null, null, null], OutParam.VerySlow),
 
+  //Turn rules - obstacles on the right
   new LogicRule([null, null, InParam.Close], OutParam.Left),
   new LogicRule([null, null, InParam.VeryClose], OutParam.StrongLeft),
   new LogicRule([InParam.Far, InParam.Medium, InParam.Medium], OutParam.Left),
   new LogicRule([InParam.Medium, InParam.Close, InParam.Close], OutParam.StrongLeft),
 
+  //Turn rules - obstacles on the left
   new LogicRule([InParam.Close, null, null], OutParam.Right),
   new LogicRule([InParam.VeryClose, null, null], OutParam.StrongRight),
   new LogicRule([InParam.Medium, InParam.Medium, InParam.Far], OutParam.Right),
