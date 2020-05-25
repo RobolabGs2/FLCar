@@ -66,7 +66,7 @@ export class InfoDisplay {
             htmlMap.forEach((value, key) => {
                 value.innerText = `0`;
             });
-            value.values.forEach(element => htmlMap.get(element.distance)!.innerText = element.value.toString());
+            value.values.forEach(element => htmlMap.get(element.distance)!.innerText = element.value.toFixed(2).toString());
         });
     }
 
@@ -84,7 +84,7 @@ export class InfoDisplay {
                 value.innerText = `0`;
             }
         });
-        params.forEach(speed => this.html_by_param.get(speed.param)!.innerText = speed.value.toString())
+        params.forEach(speed => this.html_by_param.get(speed.param)!.innerText = speed.value.toFixed(2).toString())
     }
 }
 
