@@ -3,18 +3,18 @@ const pi = Math.PI;
 export class FunctionIntervals {
   distance: number[];
   angle: number[];
-  trgt_dist: number[];
+  target_dist: number[];
   speed: number[];
   turn: number[];
+  range = 100;
 
   constructor() {
-    const range = 100;
     //               |______   _____   _____   ____
     //               |      \ /     \ /     \ /
     //               |       ╳       ╳       ╳
     //               |      / \     / \     / \
     //               0__1  2   3   4   5   6   7
-    this.distance = [0, 0, range*(1/6), range*(2/6), range*(3/6), range*(4/6), range*(5/6), range, Infinity, Infinity];
+    this.distance = [0, 0, this.range*(1/6), this.range*(2/6), this.range*(3/6), this.range*(4/6), this.range*(5/6), this.range, Infinity, Infinity];
 
 
     //              ____               ____
@@ -30,7 +30,7 @@ export class FunctionIntervals {
     //                |       ╳
     //                |      / \
     //                0__1  2   3
-    this.trgt_dist = [0, 0, 30, 50, Infinity, Infinity]
+    this.target_dist = [0, 0, 30, 50, Infinity, Infinity]
 
     //             |     ____   _____   _____
     //             |\   /    \ /     \ /

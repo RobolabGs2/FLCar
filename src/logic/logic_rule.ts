@@ -38,12 +38,12 @@ export const LOGIC_RULES: LogicRule[] = [
   new LogicRule([null, InParam.VeryClose, null, null, null], OutParam.VerySlow),
 
   new LogicRule([null, null, InParam.Close], OutParam.Left),
+  new LogicRule([null, null, InParam.VeryClose], OutParam.StrongLeft),
   new LogicRule([InParam.Far, InParam.Medium, InParam.Medium], OutParam.Left),
   new LogicRule([InParam.Medium, InParam.Close, InParam.Close], OutParam.StrongLeft),
-  new LogicRule([InParam.Close, InParam.VeryClose, InParam.VeryClose], OutParam.StrongLeft),
 
   new LogicRule([InParam.Close, null, null], OutParam.Right),
+  new LogicRule([InParam.VeryClose, null, null], OutParam.StrongRight),
   new LogicRule([InParam.Medium, InParam.Medium, InParam.Far], OutParam.Right),
   new LogicRule([InParam.Close, InParam.Close, InParam.Medium], OutParam.StrongRight),
-  new LogicRule([InParam.VeryClose, InParam.VeryClose, InParam.Close], OutParam.StrongRight),
 ];

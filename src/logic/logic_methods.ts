@@ -95,7 +95,7 @@ for (let i = 0; i < 4; i++) {
 }
 
 for (let i = 0; i < 2; i++) {
-    let arr = FI.trgt_dist.slice(2*i, 2*i + 4);
+    let arr = FI.target_dist.slice(2*i, 2*i + 4);
     in_t_dist_funcs.set(i + 8, new MembershipFunc(arr));
 }
 
