@@ -1,4 +1,4 @@
-import { InParam, OutParam, FuzzySensor, FuzzyOutParam } from "./logic_methods";
+import {FuzzyOutParam, FuzzySensor, InParam, OutParam} from "./logic_methods";
 
 export class LogicRule {
   private antecedent: (InParam | null)[];
@@ -32,7 +32,7 @@ export class LogicRule {
 }
 
 export const LOGIC_RULES: LogicRule[] = [
-  //Speed rules
+  //Speed rules - obstacles
   new LogicRule([null, InParam.Far, null, null, null], OutParam.Fast),
   new LogicRule([null, InParam.Medium, null, null, null], OutParam.Medium),
   new LogicRule([null, InParam.Close, null, null, null], OutParam.Slow),
@@ -49,4 +49,14 @@ export const LOGIC_RULES: LogicRule[] = [
   new LogicRule([InParam.VeryClose, null, null], OutParam.StrongRight),
   new LogicRule([InParam.Medium, InParam.Medium, InParam.Far], OutParam.Right),
   new LogicRule([InParam.Close, InParam.Close, InParam.Medium], OutParam.StrongRight),
+
+  //Turn rules - targeting
+  new LogicRule([InParam.Far,InParam.Far,InParam.Far,InParam.TLeft, InParam.TFar], OutParam.Left),
+  new LogicRule([InParam.Far,InParam.Far,InParam.Far,InParam.TStrongLeft, InParam.TFar], OutParam.StrongLeft),
+  new LogicRule([InParam.Far,InParam.Far,InParam.Far,InParam.TRight, InParam.TFar], OutParam.Right),
+  new LogicRule([InParam.Far,InParam.Far,InParam.Far,InParam.TStrongRight, InParam.TFar], OutParam.StrongRight),
+
+  //Speed rules - targeting
+  new LogicRule([InParam.TStrongRight,InParam.TStrongLeft,InParam.TClose],OutParam.VerySlow),
+  new LogicRule([InParam.TStrongRight,InParam.TStrongLeft,InParam.TClose],OutParam.VerySlow),
 ];

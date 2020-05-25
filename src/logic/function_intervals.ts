@@ -31,7 +31,7 @@ export class FunctionIntervals {
     //                |       ╳
     //                |      / \
     //                0__1  2   3
-    this.target_dist = [0, 0, 30, 50, Infinity, Infinity]
+    this.target_dist = [0, 0, 10, 20, Infinity, Infinity]
 
     //             |     ____   _____   _____
     //             |\   /    \ /     \ /
