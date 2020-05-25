@@ -1,8 +1,18 @@
-export enum InDistance {
+import { FI } from "./function_intervals";
+
+export enum InParam {
     VeryClose,
     Close,
     Medium,
-    Far
+    Far,
+
+    StrongLeft,
+    Left,
+    Right,
+    StrongRight,
+
+    TClose,
+    TFar
 }
 
 export enum OutParam {
@@ -21,13 +31,13 @@ export enum OutParam {
 export function is_speed(val: OutParam): boolean {
     return val < OutParam.StrongLeft;
 }
-export interface FuzzyInDist {
-    distance: InDistance,
+export interface FuzzyInParam {
+    distance: InParam,
     value: number
 }
 
 export interface FuzzySensor {
-    values: FuzzyInDist[]
+    values: FuzzyInParam[]
 }
 
 export interface FuzzyOutParam {
@@ -69,56 +79,49 @@ class MembershipFunc {
         return val * (this.intervals[2] - this.intervals[3]) + this.intervals[3];
     }
 }
-//required sensors distance, setting them to lower will cause troubles
-const range = 100;
-            //            |______   _____   _____   ____
-            //            |      \ /     \ /     \ /
-            //            |       ╳       ╳       ╳
-            //            |      / \     / \     / \
-            //            0__1  2   3   4   5   6   7
-var distance_intervals = [0, 0, range*(1/6), range*(2/6), range*(3/6), range*(4/6), range*(5/6), range, Infinity, Infinity];
 
-var distance_funcs = new Map<InDistance, MembershipFunc>();
+export var in_dist_funcs = new Map<InParam, MembershipFunc>();
+export var in_angl_funcs = new Map<InParam, MembershipFunc>();
+export var in_t_dist_funcs = new Map<InParam, MembershipFunc>();
+
 for (let i = 0; i < 4; i++) {
-    let arr = distance_intervals.slice(2*i, 2*i + 4);
-    distance_funcs.set(i, new MembershipFunc(arr));
+    let arr = FI.distance.slice(2*i, 2*i + 4);
+    in_dist_funcs.set(i, new MembershipFunc(arr));
+}
+
+for (let i = 0; i < 4; i++) {
+    let arr = FI.angle.slice(2*i, 2*i + 4);
+    in_angl_funcs.set(i + 4, new MembershipFunc(arr));
+}
+
+for (let i = 0; i < 2; i++) {
+    let arr = FI.trgt_dist.slice(2*i, 2*i + 4);
+    in_t_dist_funcs.set(i + 8, new MembershipFunc(arr));
 }
 
 // Перевод расстояния в нечеткую переменную
-export function eval_fuzzy_sensor(distance: number) : FuzzySensor {
+export function eval_fuzzy_sensor(distance: number, func_col: Map<InParam, MembershipFunc>) : FuzzySensor {
     let result = { values: [] } as FuzzySensor;
-    for(var i = 0; i < 4; i++) {
-        let temp = distance_funcs.get(i)!.eval(distance)
+    func_col.forEach((func: MembershipFunc, param: InParam) => {
+        let temp = func.eval(distance)
         if (temp != 0)
             result.values.push({
-                distance: i,
+                distance: param,
                 value: temp
             });
-    }
+    });
     return result;
 }
-            //          |     ____   _____   _____
-            //          |\   /    \ /     \ /
-            //          |  ╳       ╳       ╳
-            //          |/   \    / \     / \
-            //         012    3  4   5   6   7
-var speed_intervals = [0,0,0, 10, 20, 30, 40, 50, 60, 60]
-var pi = Math.PI;
-            //            \  / \ | / \  /
-            //             \/   \|/   \/
-            //             /\   /|\   /\
-            //            /  \ / | \ /  \
-            //           1    2     3    4
-var turn_intervals =  [-3*pi/12, -3*pi/12, -3*pi/12, -pi/12, pi/12, pi/12, pi/12, 3*pi/12, 3*pi/12, 3*pi/12]
+
 var output_funcs = new Map<OutParam, MembershipFunc>();
 
 for (let i = 0; i < 4; i++) {
-    let arr = speed_intervals.slice(2*i, 2*i + 4);
+    let arr = FI.speed.slice(2*i, 2*i + 4);
     output_funcs.set(i, new MembershipFunc(arr));
 }
 
 for (let i = 0; i < 4; i++) {
-    let arr = turn_intervals.slice(2*i, 2*i + 4);
+    let arr = FI.turn.slice(2*i, 2*i + 4);
     output_funcs.set(i + 4, new MembershipFunc(arr));
 }
 interface Point {

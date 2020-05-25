@@ -1,5 +1,5 @@
 import { info_display } from "../base/info_display";
-import { eval_fuzzy_sensor, FuzzySensor, FuzzyOutParam, is_speed, merge_params, eval_params } from "./logic_methods";
+import { eval_fuzzy_sensor, FuzzySensor, FuzzyOutParam, is_speed, merge_params, eval_params, FuzzyInParam, in_dist_funcs, in_angl_funcs, in_t_dist_funcs } from "./logic_methods";
 import { LOGIC_RULES } from "./logic_rule";
 
 export class LogicStatus {
@@ -11,8 +11,12 @@ export class LogicStatus {
 
     constructor() {}
 
-    public update(sensor_values: number[]) {
-        this.fuzzy_inputs = sensor_values.map(eval_fuzzy_sensor);
+    public update(sensor_values: number[], target_angle: number, target_distance: number) {
+        this.fuzzy_inputs = sensor_values.map((val) =>
+            eval_fuzzy_sensor(val, in_dist_funcs));
+        let fuzzy_angle = eval_fuzzy_sensor(target_angle, in_angl_funcs);
+        let fuzzy_dist = eval_fuzzy_sensor(target_angle, in_t_dist_funcs);
+        this.fuzzy_inputs.push(fuzzy_angle, fuzzy_dist);
         this.eval_fuzzy_out_params();
         this.output_speed = eval_params(merge_params(this.fuzzy_speed));
         this.output_turn = eval_params(merge_params(this.fuzzy_turn));
@@ -49,12 +53,13 @@ export class LogicStatus {
                     elem.value = param.value;
                 return;
             }
+            i++;
         }
         collection.splice(i, 0, param);
     }
 
     private print_info() {
-        info_display.print_sensors_fuzzy(this.fuzzy_inputs);
+        // info_display.print_sensors_fuzzy(this.fuzzy_inputs);
         info_display.print_fuzzy_speed(this.fuzzy_speed);
         info_display.print_fuzzy_turn(this.fuzzy_turn);
     }

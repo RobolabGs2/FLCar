@@ -47,7 +47,7 @@ export class Logic{
         this._map.actors().forEach(actor => {
             let sensor_values = actor.sensors.map((val) => val.value);
             info_display.print_sensors_distance(sensor_values);
-            actor.status.update(sensor_values);
+            actor.status.update(sensor_values, actor.target.angle, actor.target.distance);
             actor.necessary_speed = actor.status.output_speed;
             actor.wheel_angle = actor.status.output_turn;
             // if (actor.target.distance < 50)
