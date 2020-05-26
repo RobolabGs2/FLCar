@@ -88,17 +88,20 @@ export class InfoDisplay {
     }
 
     print_sensors_fuzzy(sensors_fuzzy: FuzzySensor[]) {
+        this.html_by_target.forEach((value, key) => {
+            value.innerText = `0`;
+        });
         sensors_fuzzy.forEach((value, i) => {
             let htmlMap: Map<InParam, HTMLElement> | null = null;
             if (i > 2) {
                 htmlMap = this.html_by_target;
             } else {
                 htmlMap = this.html_by_distance[i];
-            }
-            if (htmlMap) {
                 htmlMap.forEach((value, key) => {
                     value.innerText = `0`;
                 });
+            }
+            if (htmlMap) {
                 value.values.forEach(element => htmlMap?.get(element.distance)!.innerText = element.value.toFixed(2).toString());
             }
         });
