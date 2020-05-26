@@ -1,4 +1,4 @@
-import {FuzzyOutParam, FuzzySensor, IP as IP, OutParam} from "./logic_methods";
+import {FuzzyOutParam, FuzzySensor, InParam as IP, OutParam} from "./logic_methods";
 
 export class LogicRule {
   private antecedent: (IP | null)[];
