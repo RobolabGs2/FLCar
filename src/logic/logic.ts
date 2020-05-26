@@ -47,15 +47,13 @@ export class Logic{
         this._map.actors().forEach(actor => {
             let sensor_values = actor.sensors.map((val) => val.value);
             info_display.print_sensors_distance(sensor_values);
-            actor.status.update(sensor_values);
+            actor.status.update(sensor_values, actor.target.angle, actor.target.distance);
+            actor.necessary_speed = actor.status.output_speed;
+            actor.wheel_angle = actor.status.output_turn;
 
-            if (actor.target.distance < 50)
-                actor.necessary_speed = 10;
-            else
-                actor.necessary_speed = actor.sensors[1].value < 30 ? -50: 50;
-            actor.wheel_angle = actor.target.angle / 2;
-            // actor.wheel_angle = actor.speed < 0 ? 0.01 : actor.target.angle / 50;
-            // actor.wheel_angle = desired_angle;
+            // Проверка на близость к цели
+            // if (actor.target.distance < 20)
+            //     actor.necessary_speed = 0;
         })
     }
 }

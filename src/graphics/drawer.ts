@@ -1,3 +1,4 @@
+import "./drawer.css"
 import { IgnorePlugin } from "webpack";
 import { Point } from "../base/geometry";
 

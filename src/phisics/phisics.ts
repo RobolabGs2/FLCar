@@ -120,7 +120,6 @@ export class PhisicsContext{
             //  подобие матрицы поворота
             let sin_a = Math.sin(actor.angle);
             let cos_a = Math.cos(actor.angle);
-
             //  сохраняем старую позицию и поворот что бы если что вернуться
             let last_point = actor.coordinates;
             let last_angle = actor.angle;
@@ -128,7 +127,7 @@ export class PhisicsContext{
             let dist = actor.speed * dt;
             //  новая координата и поворот
             actor.coordinates = actor.coordinates.add(new Point(-dist * sin_a, dist * cos_a));
-            actor.angle += this.recorrect_angle(actor.wheel_angle * dist); // TODO это пока заглушка, но, возможно, рабочая
+            actor.angle += this.recorrect_angle(Math.sign(actor.wheel_angle) * dist / (actor.width / 2 * Math.PI * Math.sqrt(1/Math.pow(Math.sin(actor.wheel_angle), 2) - 3 / 4))); // TODO это пока заглушка, но, возможно, рабочая
             // TODO расчитываем новую скорость, исходя из желаемой
             if(actor.speed > actor.necessary_speed)
                 actor.speed -= acceleration * dt;
