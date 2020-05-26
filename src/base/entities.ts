@@ -1,5 +1,5 @@
 import {Point} from "./geometry";
-import {DrawableActor, DrawableMap, DrawableSensor, DrawableTargetSensor} from "../graphics/drawer";
+import { DrawableActor, DrawableMap, DrawableSensor } from "../graphics/drawer";
 import {PhisicsActor, PhisicsMap, PhisicsSensor} from "../phisics/phisics";
 import {extractImageData} from "../image/helpers";
 import { LogicActor, LogicSensor, LogicMap, LogicTargetSensor } from "../logic/logic";
@@ -22,7 +22,7 @@ export class BlankSensor implements PhisicsSensor, LogicSensor, DrawableSensor {
     }
 }
 
-export class TargetSensor implements LogicTargetSensor, DrawableTargetSensor {
+export class TargetSensor implements LogicTargetSensor {
     public angle: number;
     public distance: number;
 
@@ -32,26 +32,48 @@ export class TargetSensor implements LogicTargetSensor, DrawableTargetSensor {
     }
 }
 
+export type CarSettings = {
+    turn_radius: number,
+    max_speed: number,
+    acceleration: number,
+    sensor_len: number,
+    coordinates: Point,
+    angle: number,
+};
+
 export class BlankCar implements DrawableActor, PhisicsActor, LogicActor {
-    angle: number;
     coordinates: Point;
+
     speed: number;
     necessary_speed: number;
+    max_speed: number;
+    acceleration: number;
+
+    angle: number;
     wheel_angle: number;
+    turn_radius: number;
+
     sensors: Array<BlankSensor>;
     target: TargetSensor;
     status: LogicStatus;
 
-    public constructor(readonly view: ImageBitmap) {
-        this.angle = 0;
-        this.coordinates = new Point(0, 0);
+    public constructor(readonly view: ImageBitmap, cs: CarSettings) {
+        this.coordinates = cs.coordinates;
+        this.angle = cs.angle;
         this.speed = 0;
+
         this.necessary_speed = 100;
         this.wheel_angle = 0;
+
+        this.turn_radius = cs.turn_radius;
+        this.max_speed = cs.max_speed;
+
+        this.acceleration = cs.acceleration;
+
         this.sensors = [
-            new BlankSensor(100, -Math.PI/4), // LEFT
-            new BlankSensor(100, 0),          // MIDDLE
-            new BlankSensor(100, Math.PI/4)   // RIGHT
+            new BlankSensor(cs.sensor_len, -Math.PI/4), // LEFT
+            new BlankSensor(cs.sensor_len, 0),          // MIDDLE
+            new BlankSensor(cs.sensor_len, Math.PI/4)   // RIGHT
         ];
         this.target = new TargetSensor();
         this.status = new LogicStatus();
@@ -91,9 +113,9 @@ class PhysicsMap {
 export class BlankMap extends PhysicsMap implements DrawableMap, PhisicsMap, LogicMap {
     public target: Point;
 
-    public constructor(readonly stage: ImageBitmap, public car: BlankCar) {
+    public constructor(readonly stage: ImageBitmap, public car: BlankCar, target: Point) {
         super(extractImageData(stage))
-        this.target = new Point(100, 200);
+        this.target = target;
     }
 
     public actors() {

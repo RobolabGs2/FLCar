@@ -17,9 +17,6 @@ export interface DrawableActor {
 
     // Как актор видит мир
     readonly sensors: Array<DrawableSensor>
-
-    // Цель актора
-    readonly target: DrawableTargetSensor;
 }
 
 export interface DrawableSensor {
@@ -33,14 +30,6 @@ export interface DrawableSensor {
     readonly value: number;
 }
 
-export interface DrawableTargetSensor {
-    // Угол относительно машинки
-    readonly  angle: number;
-
-    // Расстояние до цели
-    readonly distance: number;
-
-}
 
 // Всё, что должно рисовать
 export interface DrawableMap {
@@ -49,6 +38,9 @@ export interface DrawableMap {
 
     // Все акторы, в частном случае -- одна машинка
     actors: () => Array<DrawableActor>
+
+    // Координаты цели
+    readonly target: Point;
 }
 
 //Отрисовщик, умеет рисовать DrawableMap на ваших канвасах
@@ -81,14 +73,18 @@ export class Drawer {
                     context.stroke();
                     context.fillStyle = "red";
                     context.fillRect(-5, sensor.value - 5, 10, 10);
-                }))
-            this.in_transform(actor.coordinates, actor.angle + actor.target.angle, (context) => {
-                context.beginPath();
-                context.moveTo(0, 0);
-                context.lineTo(0, actor.target.distance);
-                context.stroke();
-            });
+                }));
+                this.in_transform(new Point(0, 0), 0, context => {
+                    context.beginPath();
+                    context.moveTo(actor.coordinates.x, actor.coordinates.y);
+                    context.lineTo(map.target.x, map.target.y);
+                    context.stroke();
+                });
         });
+    }
+
+    public scale(point: Point): Point {
+        return point.mult(1 / this._scale);    
     }
 
     private draw_transform(img: ImageBitmap, coords: Point, angle: number) {

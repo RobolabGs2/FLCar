@@ -11,6 +11,10 @@ export class Point {
         return new Point(this.x - p.x, this.y - p.y);
     }
 
+    public mult(by: number): Point {
+        return new Point(this.x * by, this.y * by);
+    }
+
     public round(){
         return new Point(Math.round(this.x), Math.round(this.y));
     }
