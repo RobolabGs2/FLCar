@@ -52,8 +52,8 @@ export class Logic{
             actor.wheel_angle = actor.status.output_turn;
 
             // Проверка на близость к цели
-            // if (actor.target.distance < 20)
-            //     actor.necessary_speed = 0;
+            if (actor.target.distance < 20)
+                actor.necessary_speed = 0;
         })
     }
 }

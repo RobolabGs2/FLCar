@@ -184,7 +184,7 @@ export function merge_params(params: FuzzyOutParam[]): Point[] {
     points.push({x: ints[3], y: 0});
     return points;
 }
-export function  eval_params(points: Point[]) {
+export function eval_params(points: Point[]) {
     if (points.length == 0)
         return 0;
     let sum1 = 0;
