@@ -15,7 +15,7 @@ export class LogicStatus {
         this.fuzzy_inputs = sensor_values.map((val) =>
             eval_fuzzy_sensor(val, in_dist_funcs));
         let fuzzy_angle = eval_fuzzy_sensor(target_angle, in_angl_funcs);
-        let fuzzy_dist = eval_fuzzy_sensor(target_angle, in_t_dist_funcs);
+        let fuzzy_dist = eval_fuzzy_sensor(target_distance, in_t_dist_funcs);
         this.fuzzy_inputs.push(fuzzy_angle, fuzzy_dist);
         this.eval_fuzzy_out_params();
         this.output_speed = eval_params(merge_params(this.fuzzy_speed));

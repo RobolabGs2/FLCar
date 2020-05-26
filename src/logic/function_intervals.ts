@@ -24,14 +24,14 @@ export class FunctionIntervals {
     //                   /\   /|\   /\
     //                  /  \ / | \ /  \
     //             01  2   3_4   5_6   7  89
-    this.angle = [-pi,-pi, -3*pi/4, -pi/4, pi/4, pi/4, pi/4, 3*pi/4, pi, pi]
+    this.angle = [-pi,-pi, -3*pi/4, -pi/4, -pi/4, pi/4, pi/4, 3*pi/4, pi, pi]
 
-    //                |______   _______
-    //                |      \ /
-    //                |       ╳
-    //                |      / \
-    //                0__1  2   3
-    this.target_dist = [0, 0, 10, 20, Infinity, Infinity]
+    //                  |______   _______
+    //                  |      \ /
+    //                  |       ╳
+    //                  |      / \
+    //                  0__1  2   3
+    this.target_dist = [0, 0, 20, 30, Infinity, Infinity]
 
     //             |     ____   _____   _____
     //             |\   /    \ /     \ /
