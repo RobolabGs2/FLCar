@@ -1,10 +1,10 @@
-import {FuzzyOutParam, FuzzySensor, InParam, OutParam} from "./logic_methods";
+import {FuzzyOutParam, FuzzySensor, IP as IP, OutParam} from "./logic_methods";
 
 export class LogicRule {
-  private antecedent: (InParam | null)[];
+  private antecedent: (IP | null)[];
   private consequent: OutParam;
 
-  constructor(antecedent: (InParam | null)[], consequent: OutParam) {
+  constructor(antecedent: (IP | null)[], consequent: OutParam) {
       if (antecedent.length > 5)
           throw "INCORRECT ANTECEDENT IN RULE";
       this.antecedent = antecedent;
@@ -33,30 +33,30 @@ export class LogicRule {
 
 export const LOGIC_RULES: LogicRule[] = [
   //Speed rules - obstacles
-  new LogicRule([null, InParam.Far, null, null, null], OutParam.Fast),
-  new LogicRule([null, InParam.Medium, null, null, null], OutParam.Medium),
-  new LogicRule([null, InParam.Close, null, null, null], OutParam.Slow),
-  new LogicRule([null, InParam.VeryClose, null, null, null], OutParam.VerySlow),
+  new LogicRule([null, IP.Far, null, null, null], OutParam.Fast),
+  new LogicRule([null, IP.Medium, null, null, null], OutParam.Medium),
+  new LogicRule([null, IP.Close, null, null, null], OutParam.Slow),
+  new LogicRule([null, IP.VeryClose, null, null, null], OutParam.VerySlow),
 
   //Turn rules - obstacles on the right
-  new LogicRule([null, null, InParam.Close], OutParam.Left),
-  new LogicRule([null, null, InParam.VeryClose], OutParam.StrongLeft),
-  new LogicRule([InParam.Far, InParam.Medium, InParam.Medium], OutParam.Left),
-  new LogicRule([InParam.Medium, InParam.Close, InParam.Close], OutParam.StrongLeft),
+  new LogicRule([null, null, IP.Close], OutParam.Left),
+  new LogicRule([null, null, IP.VeryClose], OutParam.StrongLeft),
+  new LogicRule([IP.Far, IP.Medium, IP.Medium], OutParam.Left),
+  new LogicRule([IP.Medium, IP.Close, IP.Close], OutParam.StrongLeft),
 
   //Turn rules - obstacles on the left
-  new LogicRule([InParam.Close, null, null], OutParam.Right),
-  new LogicRule([InParam.VeryClose, null, null], OutParam.StrongRight),
-  new LogicRule([InParam.Medium, InParam.Medium, InParam.Far], OutParam.Right),
-  new LogicRule([InParam.Close, InParam.Close, InParam.Medium], OutParam.StrongRight),
+  new LogicRule([IP.Close, null, null], OutParam.Right),
+  new LogicRule([IP.VeryClose, null, null], OutParam.StrongRight),
+  new LogicRule([IP.Medium, IP.Medium, IP.Far], OutParam.Right),
+  new LogicRule([IP.Close, IP.Close, IP.Medium], OutParam.StrongRight),
 
   //Turn rules - targeting
-  new LogicRule([InParam.Far,InParam.Far,InParam.Far,InParam.TLeft, InParam.TFar], OutParam.Left),
-  new LogicRule([InParam.Far,InParam.Far,InParam.Far,InParam.TStrongLeft, InParam.TFar], OutParam.StrongLeft),
-  new LogicRule([InParam.Far,InParam.Far,InParam.Far,InParam.TRight, InParam.TFar], OutParam.Right),
-  new LogicRule([InParam.Far,InParam.Far,InParam.Far,InParam.TStrongRight, InParam.TFar], OutParam.StrongRight),
+  new LogicRule([IP.Far, IP.Far, IP.Far, IP.TLeft, IP.TFar], OutParam.Left),
+  new LogicRule([IP.Far, IP.Far, IP.Far, IP.TStrongLeft, IP.TFar], OutParam.StrongLeft),
+  new LogicRule([IP.Far, IP.Far, IP.Far, IP.TRight, IP.TFar], OutParam.Right),
+  new LogicRule([IP.Far, IP.Far, IP.Far, IP.TStrongRight, IP.TFar], OutParam.StrongRight),
 
   //Speed rules - targeting
-  new LogicRule([InParam.TStrongRight,InParam.TStrongLeft,InParam.TClose],OutParam.VerySlow),
-  new LogicRule([InParam.TStrongRight,InParam.TStrongLeft,InParam.TClose],OutParam.VerySlow),
+  new LogicRule([IP.TStrongRight, IP.TStrongLeft, IP.TClose],OutParam.VerySlow),
+  new LogicRule([IP.TStrongRight, IP.TStrongLeft, IP.TClose],OutParam.VerySlow),
 ];
