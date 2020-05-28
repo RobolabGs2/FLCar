@@ -73,8 +73,10 @@ export const LOGIC_RULES: LogicRule[] = [
 
   //Turn rules - targeting
   new LogicRule([IP.Far, IP.Far, IP.Far, IP.TLeft, null], OutParam.Left),
+  new LogicRule([IP.Far, IP.Far, IP.Medium, IP.TLeft, null], OutParam.Left),
   new LogicRule([IP.Far, IP.Far, IP.Far, IP.TStrongLeft, null], OutParam.StrongLeft),
   new LogicRule([IP.Far, IP.Far, IP.Far, IP.TRight, null], OutParam.Right),
+  new LogicRule([IP.Medium, IP.Far, IP.Far, IP.TRight, null], OutParam.Right),
   new LogicRule([IP.Far, IP.Far, IP.Far, IP.TStrongRight, null], OutParam.StrongRight),
 
   //Speed rules - targeting
