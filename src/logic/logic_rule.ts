@@ -1,10 +1,10 @@
-import {FuzzyOutParam, FuzzySensor, InParam as IP, OutParam} from "./logic_methods";
+import {FuzzyOutParam, FuzzySensor, InParam as InP, OutParam as OutP} from "./logic_methods";
 
 export class LogicRule {
-  private antecedent: (IP | null)[];
-  private consequent: OutParam;
+  private antecedent: (InP | null)[];
+  private consequent:OutP;
 
-  constructor(antecedent: (IP | null)[], consequent: OutParam) {
+  constructor(antecedent: (InP | null)[], consequent:OutP) {
       if (antecedent.length > 5)
           throw "INCORRECT ANTECEDENT IN RULE";
       this.antecedent = antecedent;
@@ -33,52 +33,52 @@ export class LogicRule {
 
 export const LOGIC_RULES: LogicRule[] = [
   //Speed rules - obstacles
-  new LogicRule([null, IP.Far, null, null, null], OutParam.Fast),
-  new LogicRule([null, IP.Medium, null, null, null], OutParam.Medium),
-  new LogicRule([null, IP.Close, null, null, null], OutParam.Slow),
-  new LogicRule([null, IP.VeryClose, null, null, null], OutParam.VerySlow),
+  new LogicRule([null, InP.Far, null, null, null],OutP.Fast),
+  new LogicRule([null, InP.Medium, null, null, null],OutP.Medium),
+  new LogicRule([null, InP.Close, null, null, null],OutP.Slow),
+  new LogicRule([null, InP.VeryClose, null, null, null],OutP.VerySlow),
 
   //Turn rules - obstacles on the right
   //first 4 rules - case obstacle is on the right, but nothing in front
-  new LogicRule([null, IP.Far, IP.Close, null, null], OutParam.Left),
-  new LogicRule([null, IP.Medium, IP.Close, null, null], OutParam.Left),
-  new LogicRule([null, IP.Far, IP.VeryClose, null, null], OutParam.StrongLeft),
-  new LogicRule([null, IP.Medium, IP.VeryClose, null, null], OutParam.StrongLeft),
-  new LogicRule([IP.Far, IP.Medium, IP.Medium, null, null], OutParam.Left),
+  new LogicRule([null, InP.Far, InP.Close, null, null],OutP.Left),
+  new LogicRule([null, InP.Medium, InP.Close, null, null],OutP.Left),
+  new LogicRule([null, InP.Far, InP.VeryClose, null, null],OutP.StrongLeft),
+  new LogicRule([null, InP.Medium, InP.VeryClose, null, null],OutP.StrongLeft),
+  new LogicRule([InP.Far, InP.Medium, InP.Medium, null, null],OutP.Left),
   //these 6 rules - case obstacle is on the right, but angle between us and it is about 45 deg
-  new LogicRule([IP.Far,IP.Close,IP.Close],OutParam.Left),
-  new LogicRule([IP.Far,IP.Close,IP.VeryClose],OutParam.StrongLeft),
-  new LogicRule([IP.Medium,IP.Close,IP.VeryClose],OutParam.StrongLeft),
-  new LogicRule([IP.Far,IP.VeryClose,IP.VeryClose],OutParam.StrongLeft),
-  new LogicRule([IP.Medium,IP.VeryClose,IP.VeryClose],OutParam.StrongLeft),
+  new LogicRule([InP.Far,InP.Close,InP.Close], OutP.Left),
+  new LogicRule([InP.Far,InP.Close,InP.VeryClose], OutP.StrongLeft),
+  new LogicRule([InP.Medium,InP.Close,InP.VeryClose], OutP.StrongLeft),
+  new LogicRule([InP.Far,InP.VeryClose,InP.VeryClose], OutP.StrongLeft),
+  new LogicRule([InP.Medium,InP.VeryClose,InP.VeryClose], OutP.StrongLeft),
 
   //Turn rules - obstacles in front
-  new LogicRule([IP.Medium, IP.Close, IP.Medium, null, null],OutParam.Left),
-  new LogicRule([IP.Close, null, IP.Close, null, null],OutParam.Left),
-  new LogicRule([IP.VeryClose, null, IP.VeryClose, null, null],OutParam.StrongLeft),
+  new LogicRule([InP.Medium, InP.Close, InP.Medium, null, null], OutP.Left),
+  new LogicRule([InP.Close, null, InP.Close, null, null], OutP.Left),
+  new LogicRule([InP.VeryClose, null, InP.VeryClose, null, null], OutP.StrongLeft),
 
   //Turn rules - obstacles on the left
   //first 4 rules - case obstacle is on the left, but nothing in front
-  new LogicRule([IP.Close, IP.Far, null, null, null], OutParam.Right),
-  new LogicRule([IP.Close, IP.Medium, null, null, null], OutParam.Right),
-  new LogicRule([IP.VeryClose, IP.Far, null, null, null], OutParam.StrongRight),
-  new LogicRule([IP.VeryClose, IP.Medium, null, null, null], OutParam.StrongRight),
+  new LogicRule([InP.Close, InP.Far, null, null, null],OutP.Right),
+  new LogicRule([InP.Close, InP.Medium, null, null, null],OutP.Right),
+  new LogicRule([InP.VeryClose, InP.Far, null, null, null],OutP.StrongRight),
+  new LogicRule([InP.VeryClose, InP.Medium, null, null, null],OutP.StrongRight),
   //these 6 rules - case obstacle is on the left, but angle between us and it is about 45 deg
-  new LogicRule([IP.Medium, IP.Medium, IP.Far, null, null], OutParam.Right),
-  new LogicRule([IP.Close, IP.Close, IP.Far, null, null], OutParam.Right),
-  new LogicRule([IP.VeryClose, IP.Close, IP.Far, null, null], OutParam.StrongRight),
-  new LogicRule([IP.VeryClose, IP.Close, IP.Medium, null, null], OutParam.StrongRight),
-  new LogicRule([IP.VeryClose, IP.VeryClose, IP.Medium, null, null], OutParam.StrongRight),
-  new LogicRule([IP.VeryClose, IP.VeryClose, IP.Far, null, null], OutParam.StrongRight),
+  new LogicRule([InP.Medium, InP.Medium, InP.Far, null, null],OutP.Right),
+  new LogicRule([InP.Close, InP.Close, InP.Far, null, null],OutP.Right),
+  new LogicRule([InP.VeryClose, InP.Close, InP.Far, null, null],OutP.StrongRight),
+  new LogicRule([InP.VeryClose, InP.Close, InP.Medium, null, null],OutP.StrongRight),
+  new LogicRule([InP.VeryClose, InP.VeryClose, InP.Medium, null, null],OutP.StrongRight),
+  new LogicRule([InP.VeryClose, InP.VeryClose, InP.Far, null, null],OutP.StrongRight),
 
   //Turn rules - targeting
-  new LogicRule([IP.Far, IP.Far, IP.Far, IP.TLeft, null], OutParam.Left),
-  new LogicRule([IP.Far, IP.Far, IP.Medium, IP.TLeft, null], OutParam.Left),
-  new LogicRule([IP.Far, IP.Far, IP.Far, IP.TStrongLeft, null], OutParam.StrongLeft),
-  new LogicRule([IP.Far, IP.Far, IP.Far, IP.TRight, null], OutParam.Right),
-  new LogicRule([IP.Medium, IP.Far, IP.Far, IP.TRight, null], OutParam.Right),
-  new LogicRule([IP.Far, IP.Far, IP.Far, IP.TStrongRight, null], OutParam.StrongRight),
+  new LogicRule([InP.Far, InP.Far, InP.Far, InP.TLeft, null],OutP.Left),
+  new LogicRule([InP.Far, InP.Far, InP.Medium, InP.TLeft, null],OutP.Left),
+  new LogicRule([InP.Far, InP.Far, InP.Far, InP.TStrongLeft, null],OutP.StrongLeft),
+  new LogicRule([InP.Far, InP.Far, InP.Far, InP.TRight, null],OutP.Right),
+  new LogicRule([InP.Medium, InP.Far, InP.Far, InP.TRight, null],OutP.Right),
+  new LogicRule([InP.Far, InP.Far, InP.Far, InP.TStrongRight, null],OutP.StrongRight),
 
   //Speed rules - targeting
-  new LogicRule([null, null, null, null, IP.TClose],OutParam.VerySlow),
+  new LogicRule([null, null, null, null, InP.TClose], OutP.VerySlow),
 ];
