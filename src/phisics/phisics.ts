@@ -5,28 +5,19 @@ export interface PhisicsActor{
     // Координаты центра
     coordinates: Point;
 
-    // Угол поворота
-    angle: number;
-
-    // Фактическая скорость
     speed: number;
+    readonly necessary_speed: number;
+    readonly max_speed: number;
+    readonly acceleration: number;
 
-    // Скорость, до которой надо бы разогнаться
-    necessary_speed: number;
+    angle: number;
+    readonly wheel_angle: number;
+    readonly turn_radius: number;
 
-    // угол поворота колёс
-    wheel_angle: number;
-
-    // высота картинки
     readonly height: number;
-
-    // ширина картинки
     readonly width: number;
 
-    // Массив сенсоров
     sensors: Array<PhisicsSensor>;
-
-    // Сенсор цели
     target: PhisicsTargetSensor;
 }
 
@@ -109,11 +100,8 @@ export class PhisicsContext{
     }
 
     tick(dt: number){
-        //  TODO ускорение, с которым разгоняется машинка,
-        //  надо потом куда-то перетащить, в саму машинку, наверное
-        let acceleration = 100;
-
         let actors = this._map.actors();
+
         for(let i = 0; i < actors.length; ++i){
             let actor = actors[i];
 
@@ -127,12 +115,15 @@ export class PhisicsContext{
             let dist = actor.speed * dt;
             //  новая координата и поворот
             actor.coordinates = actor.coordinates.add(new Point(-dist * sin_a, dist * cos_a));
-            actor.angle += this.recorrect_angle(Math.sign(actor.wheel_angle) * dist / (actor.width / 2 * Math.PI * Math.sqrt(1/Math.pow(Math.sin(actor.wheel_angle), 2) - 3 / 4))); // TODO это пока заглушка, но, возможно, рабочая
-            // TODO расчитываем новую скорость, исходя из желаемой
-            if(actor.speed > actor.necessary_speed)
-                actor.speed -= acceleration * dt;
-            if(actor.speed < actor.necessary_speed)
-                actor.speed += acceleration * dt;
+            let wheel_angle = Math.min(Math.abs(actor.wheel_angle), Math.PI / 4) * Math.abs(actor.wheel_angle);
+            let tern_radius = actor.turn_radius * 2 * Math.sqrt(1/Math.pow(Math.sin(wheel_angle), 2) - 3 / 4);
+            actor.angle += this.recorrect_angle(Math.sign(wheel_angle) * dist / tern_radius);
+
+            let necessary_speed = Math.min(Math.abs(actor.necessary_speed), actor.max_speed) * Math.sign(actor.necessary_speed);
+            if(actor.speed > necessary_speed)
+                actor.speed -= actor.acceleration * dt;
+            if(actor.speed < necessary_speed)
+                actor.speed += actor.acceleration * dt;
 
             //  -- Коллизии -- //
 

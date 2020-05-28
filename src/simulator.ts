@@ -7,8 +7,8 @@ import { Logic } from "./logic/logic";
 
 
 export const DEFAULT_CAR = {
-    turn_radius: 30,
-    max_speed: 50,
+    turn_radius: 15,
+    max_speed: 18,
     acceleration: 10,
     sensor_len: 100,
     coordinates: new Point(500, 500),
