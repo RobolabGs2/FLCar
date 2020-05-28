@@ -117,7 +117,7 @@ export class PhisicsContext{
             actor.coordinates = actor.coordinates.add(new Point(-dist * sin_a, dist * cos_a));
             let wheel_angle = Math.min(Math.abs(actor.wheel_angle), Math.PI / 4) * Math.sign(actor.wheel_angle);
             let tern_radius = actor.turn_radius * 2 * Math.sqrt(1/Math.pow(Math.sin(wheel_angle), 2) - 3 / 4);
-            actor.angle += this.recorrect_angle(Math.sign(wheel_angle) * dist / tern_radius);
+            actor.angle = this.recorrect_angle(actor.angle + Math.sign(wheel_angle) * dist / tern_radius);
 
             let necessary_speed = Math.min(Math.abs(actor.necessary_speed), actor.max_speed) * Math.sign(actor.necessary_speed);
             if(actor.speed > necessary_speed)
