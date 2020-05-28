@@ -6,7 +6,11 @@ export class FunctionIntervals {
   target_dist: number[];
   speed: number[];
   turn: number[];
-  //Dependence number for converting distances, defines 'far' dist
+  //Dependence number for converting distances, defines 'far'
+
+  public validate_input_values(turn_range: number, sensors_dst: number, max_speed: number){
+    return sensors_dst >= turn_range*7 && max_speed > 0;
+  }
 
   constructor(turn_range : number, max_speed: number) {
     const range = turn_range*7;
@@ -50,7 +54,7 @@ export class FunctionIntervals {
   }
 }
 
-//pass  радиуc поворота
+//pass  радиус поворота
 export var FI : FunctionIntervals;
 FI = new FunctionIntervals(15, 18); // Можно поменять место инициализации
 
