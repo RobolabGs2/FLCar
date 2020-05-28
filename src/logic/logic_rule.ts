@@ -51,12 +51,11 @@ export const LOGIC_RULES: LogicRule[] = [
   new LogicRule([IP.Close, IP.Close, IP.Medium], OutParam.StrongRight),
 
   //Turn rules - targeting
-  new LogicRule([IP.Far, IP.Far, IP.Far, IP.TLeft, IP.TFar], OutParam.Left),
-  new LogicRule([IP.Far, IP.Far, IP.Far, IP.TStrongLeft, IP.TFar], OutParam.StrongLeft),
-  new LogicRule([IP.Far, IP.Far, IP.Far, IP.TRight, IP.TFar], OutParam.Right),
-  new LogicRule([IP.Far, IP.Far, IP.Far, IP.TStrongRight, IP.TFar], OutParam.StrongRight),
+  new LogicRule([IP.Far, IP.Far, IP.Far, IP.TLeft, null], OutParam.Left),
+  new LogicRule([IP.Far, IP.Far, IP.Far, IP.TStrongLeft, null], OutParam.StrongLeft),
+  new LogicRule([IP.Far, IP.Far, IP.Far, IP.TRight, null], OutParam.Right),
+  new LogicRule([IP.Far, IP.Far, IP.Far, IP.TStrongRight, null], OutParam.StrongRight),
 
   //Speed rules - targeting
-  new LogicRule([IP.TStrongRight, IP.TStrongLeft, IP.TClose],OutParam.VerySlow),
-  new LogicRule([IP.TStrongRight, IP.TStrongLeft, IP.TClose],OutParam.VerySlow),
+  new LogicRule([IP.TClose],OutParam.VerySlow),
 ];
