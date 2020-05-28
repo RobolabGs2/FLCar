@@ -1,21 +1,20 @@
 import {Drawer} from "./graphics/drawer";
-import {extractImageData} from "./image/helpers";
 import {BlankCar, BlankMap, CarSettings} from "./base/entities";
 import {Point} from "./base/geometry";
-import { PhisicsContext } from "./phisics/phisics";
-import { Logic } from "./logic/logic";
+import {PhisicsContext} from "./phisics/phisics";
+import {Logic} from "./logic/logic";
 
 
 export const DEFAULT_CAR = {
     turn_radius: 15,
     max_speed: 18,
     acceleration: 10,
-    sensor_len: 100,
+    sensor_len: 105,
     coordinates: new Point(500, 500),
     angle: 0,
 };
 
-export const DEfAULT_TARGET = new Point(100, 200);
+export const DEFAULT_TARGET = new Point(100, 200);
 
 export type Settings = {
     map: ImageBitmap,

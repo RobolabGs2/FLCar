@@ -8,7 +8,7 @@ export class FunctionIntervals {
   turn: number[];
   //Dependence number for converting distances, defines 'far'
 
-  public validate_input_values(turn_range: number, sensors_dst: number, max_speed: number){
+  static validate_input_values(turn_range: number, sensors_dst: number, max_speed: number){
     return sensors_dst >= turn_range*7 && max_speed > 0;
   }
 

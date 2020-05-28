@@ -1,9 +1,10 @@
 import {Point} from "./geometry";
-import { DrawableActor, DrawableMap, DrawableSensor } from "../graphics/drawer";
+import {DrawableActor, DrawableMap, DrawableSensor} from "../graphics/drawer";
 import {PhisicsActor, PhisicsMap, PhisicsSensor} from "../phisics/phisics";
 import {extractImageData} from "../image/helpers";
-import { LogicActor, LogicSensor, LogicMap, LogicTargetSensor } from "../logic/logic";
-import { LogicStatus } from "../logic/logic_status";
+import {LogicActor, LogicMap, LogicSensor, LogicTargetSensor} from "../logic/logic";
+import {LogicStatus} from "../logic/logic_status";
+import {FunctionIntervals} from "../logic/function_intervals";
 
 export class BlankSensor implements PhisicsSensor, LogicSensor, DrawableSensor {
     //  Дальность измерения датчика
@@ -76,7 +77,7 @@ export class BlankCar implements DrawableActor, PhisicsActor, LogicActor {
             new BlankSensor(cs.sensor_len, Math.PI/4)   // RIGHT
         ];
         this.target = new TargetSensor();
-        this.status = new LogicStatus();
+        this.status = new LogicStatus(new FunctionIntervals(cs.turn_radius, cs.max_speed));
     }
 
     public get height() {
