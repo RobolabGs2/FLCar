@@ -39,16 +39,37 @@ export const LOGIC_RULES: LogicRule[] = [
   new LogicRule([null, IP.VeryClose, null, null, null], OutParam.VerySlow),
 
   //Turn rules - obstacles on the right
-  new LogicRule([null, null, IP.Close, null, null], OutParam.Left),
-  new LogicRule([null, null, IP.VeryClose, null, null], OutParam.StrongLeft),
+  //first 4 rules - case obstacle is on the right, but nothing in front
+  new LogicRule([null, IP.Far, IP.Close, null, null], OutParam.Left),
+  new LogicRule([null, IP.Medium, IP.Close, null, null], OutParam.Left),
+  new LogicRule([null, IP.Far, IP.VeryClose, null, null], OutParam.StrongLeft),
+  new LogicRule([null, IP.Medium, IP.VeryClose, null, null], OutParam.StrongLeft),
   new LogicRule([IP.Far, IP.Medium, IP.Medium, null, null], OutParam.Left),
-  new LogicRule([IP.Medium, IP.Close, IP.Close, null, null], OutParam.StrongLeft),
+  //these 6 rules - case obstacle is on the right, but angle between us and it is about 45 deg
+  new LogicRule([IP.Far,IP.Close,IP.Close],OutParam.Left),
+  new LogicRule([IP.Far,IP.Close,IP.VeryClose],OutParam.StrongLeft),
+  new LogicRule([IP.Medium,IP.Close,IP.VeryClose],OutParam.StrongLeft),
+  new LogicRule([IP.Far,IP.VeryClose,IP.VeryClose],OutParam.StrongLeft),
+  new LogicRule([IP.Medium,IP.VeryClose,IP.VeryClose],OutParam.StrongLeft),
+
+  //Turn rules - obstacles in front
+  new LogicRule([IP.Medium, IP.Close, IP.Medium, null, null],OutParam.Left),
+  new LogicRule([IP.Close, null, IP.Close, null, null],OutParam.Left),
+  new LogicRule([IP.VeryClose, null, IP.VeryClose, null, null],OutParam.StrongLeft),
 
   //Turn rules - obstacles on the left
-  new LogicRule([IP.Close, null, null, null, null], OutParam.Right),
-  new LogicRule([IP.VeryClose, null, null, null, null], OutParam.StrongRight),
+  //first 4 rules - case obstacle is on the left, but nothing in front
+  new LogicRule([IP.Close, IP.Far, null, null, null], OutParam.Right),
+  new LogicRule([IP.Close, IP.Medium, null, null, null], OutParam.Right),
+  new LogicRule([IP.VeryClose, IP.Far, null, null, null], OutParam.StrongRight),
+  new LogicRule([IP.VeryClose, IP.Medium, null, null, null], OutParam.StrongRight),
+  //these 6 rules - case obstacle is on the left, but angle between us and it is about 45 deg
   new LogicRule([IP.Medium, IP.Medium, IP.Far, null, null], OutParam.Right),
-  new LogicRule([IP.Close, IP.Close, IP.Medium, null, null], OutParam.StrongRight),
+  new LogicRule([IP.Close, IP.Close, IP.Far, null, null], OutParam.Right),
+  new LogicRule([IP.VeryClose, IP.Close, IP.Far, null, null], OutParam.StrongRight),
+  new LogicRule([IP.VeryClose, IP.Close, IP.Medium, null, null], OutParam.StrongRight),
+  new LogicRule([IP.VeryClose, IP.VeryClose, IP.Medium, null, null], OutParam.StrongRight),
+  new LogicRule([IP.VeryClose, IP.VeryClose, IP.Far, null, null], OutParam.StrongRight),
 
   //Turn rules - targeting
   new LogicRule([IP.Far, IP.Far, IP.Far, IP.TLeft, null], OutParam.Left),
