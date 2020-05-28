@@ -39,16 +39,16 @@ export const LOGIC_RULES: LogicRule[] = [
   new LogicRule([null, IP.VeryClose, null, null, null], OutParam.VerySlow),
 
   //Turn rules - obstacles on the right
-  new LogicRule([null, null, IP.Close], OutParam.Left),
-  new LogicRule([null, null, IP.VeryClose], OutParam.StrongLeft),
-  new LogicRule([IP.Far, IP.Medium, IP.Medium], OutParam.Left),
-  new LogicRule([IP.Medium, IP.Close, IP.Close], OutParam.StrongLeft),
+  new LogicRule([null, null, IP.Close, null, null], OutParam.Left),
+  new LogicRule([null, null, IP.VeryClose, null, null], OutParam.StrongLeft),
+  new LogicRule([IP.Far, IP.Medium, IP.Medium, null, null], OutParam.Left),
+  new LogicRule([IP.Medium, IP.Close, IP.Close, null, null], OutParam.StrongLeft),
 
   //Turn rules - obstacles on the left
-  new LogicRule([IP.Close, null, null], OutParam.Right),
-  new LogicRule([IP.VeryClose, null, null], OutParam.StrongRight),
-  new LogicRule([IP.Medium, IP.Medium, IP.Far], OutParam.Right),
-  new LogicRule([IP.Close, IP.Close, IP.Medium], OutParam.StrongRight),
+  new LogicRule([IP.Close, null, null, null, null], OutParam.Right),
+  new LogicRule([IP.VeryClose, null, null, null, null], OutParam.StrongRight),
+  new LogicRule([IP.Medium, IP.Medium, IP.Far, null, null], OutParam.Right),
+  new LogicRule([IP.Close, IP.Close, IP.Medium, null, null], OutParam.StrongRight),
 
   //Turn rules - targeting
   new LogicRule([IP.Far, IP.Far, IP.Far, IP.TLeft, null], OutParam.Left),
@@ -57,5 +57,5 @@ export const LOGIC_RULES: LogicRule[] = [
   new LogicRule([IP.Far, IP.Far, IP.Far, IP.TStrongRight, null], OutParam.StrongRight),
 
   //Speed rules - targeting
-  new LogicRule([IP.TClose],OutParam.VerySlow),
+  new LogicRule([null, null, null, null, IP.TClose],OutParam.VerySlow),
 ];
