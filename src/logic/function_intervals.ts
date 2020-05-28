@@ -15,7 +15,7 @@ export class FunctionIntervals {
     //               |       ╳       ╳       ╳
     //               |      / \     / \     / \
     //               0__1  2   3   4   5   6   7
-    this.distance = [0, 0, this.range*(1/6), this.range*(2/6), this.range*(3/6), this.range*(4/6), this.range*(5/6), this.range, Infinity, Infinity];
+    this.distance = [0, 0, this.range*(2/6), this.range*(3/6), this.range*(4/6), this.range*(5/6), this.range*(5.5/6), this.range, Infinity, Infinity];
 
 
     //              ____               ____
