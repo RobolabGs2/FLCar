@@ -7,15 +7,15 @@ export class FunctionIntervals {
   speed: number[];
   turn: number[];
   //Dependence number for converting distances, defines 'far' dist
-  range = 100;
 
-  constructor() {
+  constructor(turn_range : number, max_speed: number) {
+    const range = turn_range*7;
     //               |______   _____   _____   ____
     //               |      \ /     \ /     \ /
     //               |       ╳       ╳       ╳
     //               |      / \     / \     / \
     //               0__1  2   3   4   5   6   7
-    this.distance = [0, 0, this.range*(2/6), this.range*(3/6), this.range*(4/6), this.range*(5/6), this.range*(5.5/6), this.range, Infinity, Infinity];
+    this.distance = [0, 0, range*(2/7), range*(3/7), range*(4/7), range*(5/7), range*(6/7), range, Infinity, Infinity];
 
 
     //              ____               ____
@@ -38,7 +38,7 @@ export class FunctionIntervals {
     //             |  ╳       ╳       ╳
     //             |/   \    / \     / \
     //            012    3  4   5   6   7
-    this.speed = [0,0,0, 10, 20, 30, 40, 50, 60, 60]
+    this.speed = [0,0,0, max_speed*(1/6), max_speed*(2/6), max_speed*(3/6), max_speed*(4/6), max_speed*(5/6), max_speed*(6/6), max_speed*(6/6)]
 
     //              ____               ____
     //                  \  / \ | / \  /
@@ -50,5 +50,7 @@ export class FunctionIntervals {
   }
 }
 
-export var FI = new FunctionIntervals(); // Можно поменять место инициализации
+//pass  радиуc поворота
+export var FI : FunctionIntervals;
+FI = new FunctionIntervals(15, 18); // Можно поменять место инициализации
 
