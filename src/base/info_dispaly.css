@@ -3,6 +3,8 @@
     padding: 4px;
     font-family: monospace;
     font-size: large;
+    min-width: 500px;
+    width: 500px;
     max-width: 500px;
 }
 

@@ -3,6 +3,7 @@ import {downloadBitmap, fileAsURL} from "./image/helpers";
 import {DEFAULT_CAR, DEFAULT_TARGET, Simulator} from "./simulator";
 import {Point} from "./base/geometry";
 import {FunctionIntervals} from "./logic/function_intervals";
+import './index.css'
 
 (document.getElementById("max-speed") as HTMLInputElement).value = DEFAULT_CAR.max_speed.toString();
 (document.getElementById("turn-radius") as HTMLInputElement).value = DEFAULT_CAR.turn_radius.toString();
@@ -39,7 +40,7 @@ unpause();
 
 Promise.all(["map.png", "small_car.png"].map(src => downloadBitmap(`./resources/${src}`)))
     .then(function ([map, car]) {
-        const settings = {map, car, car_settings: DEFAULT_CAR, target: DEFAULT_TARGET};
+        const settings = {map, car, car_settings: DEFAULT_CAR, target: DEFAULT_TARGET, time: 1};
         simulator.startSimulation(settings);
         const map_form = document.getElementById("map-settings") as HTMLFormElement;
         map_form.addEventListener("submit", ev => {
@@ -73,6 +74,13 @@ Promise.all(["map.png", "small_car.png"].map(src => downloadBitmap(`./resources/
                 simulator.startSimulation(settings);
             }
         });
+        let tardis = document.getElementById("tardis") as HTMLFormElement;
+        tardis.addEventListener("submit", ev => {
+            ev.preventDefault();
+            settings.time = tardis.querySelector<HTMLInputElement>('input[type="number"]')!.valueAsNumber;
+            simulator.restartTimer(settings.time);
+        });
+
         canvas.addEventListener('click', ev => {
             ev.preventDefault();
 
