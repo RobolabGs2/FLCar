@@ -19,7 +19,7 @@ export class FunctionIntervals {
     //               |       ╳       ╳       ╳
     //               |      / \     / \     / \
     //               0__1  2   3   4   5   6   7
-    this.distance = [0, 0, range*(2/7), range*(3/7), range*(4/7), range*(5/7), range*(6/7), range, Infinity, Infinity];
+    this.distance = [0, 0, 16, 20, 25, 35, 40, 50, Infinity, Infinity];
 
 
     //              ____               ____
@@ -41,7 +41,7 @@ export class FunctionIntervals {
     //             |\   /    \ /     \ /
     //             |  ╳       ╳       ╳
     //             |/   \    / \     / \
-    //            012    3  4   5   6   7
+    //            01    3  4   5   6   7
     this.speed = [0,0,0, max_speed*(1/6), max_speed*(2/6), max_speed*(3/6), max_speed*(4/6), max_speed*(5/6), max_speed*(6/6), max_speed*(6/6)]
 
     //              ____               ____
@@ -50,7 +50,7 @@ export class FunctionIntervals {
     //                   /\   /|\   /\
     //                  /  \ / | \ /  \
     //             01  2   3_4   5_6   7  89
-    this.turn =  [-3*pi/12, -3*pi/12, -3*pi/12, -pi/12, pi/12, pi/12, pi/12, 3*pi/12, 3*pi/12, 3*pi/12]
+    this.turn =  [-3*pi/4, -3*pi/4, -3*pi/4, -pi/4, pi/4, pi/4, pi/4, 3*pi/4, 3*pi/4, 3*pi/4]
   }
 }
 
