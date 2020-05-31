@@ -29,7 +29,7 @@
     justify-content: space-between;
 }
 
-.outparams > article > header::after {
+header::after {
     content: ":";
 }
 

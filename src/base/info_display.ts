@@ -9,21 +9,28 @@ function toString(n: number) {
 }
 
 export class InfoDisplay {
-    private div_sensors_distance: HTMLElement;
     private html_by_param = new Map<OutParam, HTMLElement>();
     private html_by_distance: Map<InParam, HTMLElement>[];
     private html_by_target: Map<InParam, HTMLElement>;
+    private html_raw_distance: Array<HTMLElement>;
 
     // Куча копипасты, кошмар, но дженерик от enum быстро сделать не смог
     constructor() {
-        this.html_by_distance = new Array(5).fill(1).map(() => new Map<InParam, HTMLElement>());
+        const countOfDistanceSensor = 5;
+        this.html_raw_distance = new Array<HTMLElement>(countOfDistanceSensor);
+        this.html_by_distance = new Array(countOfDistanceSensor).fill(1).map(() => new Map<InParam, HTMLElement>());
         this.html_by_target = new Map<InParam, HTMLElement>();
-        this.div_sensors_distance = document.getElementById("sensors-distance")!;
         const div_sensors_fuzzy = document.getElementById("sensors-fuzzy")!;
         const div_sensors_target = document.getElementById("sensor-fuzzy-target")!;
-        for (let sensor = 0; sensor < 5; sensor++) {
+        const namesOfFuzzyVars = document.createElement('section');
+        div_sensors_fuzzy.append(namesOfFuzzyVars);
+        namesOfFuzzyVars.innerHTML = "<header>Пиксели</header>";
+        for (let sensor = 0; sensor < countOfDistanceSensor; sensor++) {
             const sensor_html = document.createElement('section');
             sensor_html.classList.add('outparams');
+            const dist = document.createElement('section');
+            this.html_raw_distance[sensor] = dist;
+            sensor_html.append(dist);
             for (let i in InParam) {
                 if (!Number.isNaN(parseInt(i))) { // skip numbers
                     continue
@@ -32,13 +39,9 @@ export class InfoDisplay {
                 if (is_target(param)) {
                     continue
                 }
-                const elem = document.createElement("article");
-                const header = document.createElement('header');
-                header.innerText = i;
                 const data = document.createElement('section');
-                elem.append(header, data);
                 this.html_by_distance[sensor].set(param, data);
-                sensor_html.append(elem)
+                sensor_html.append(data)
             }
             div_sensors_fuzzy.append(sensor_html);
         }
@@ -48,6 +51,9 @@ export class InfoDisplay {
             }
             const param = InParam[i] as unknown as InParam;
             if (!is_target(param)) {
+                const header = document.createElement('header');
+                header.innerText = i;
+                namesOfFuzzyVars.append(header);
                 continue
             }
             const elem = document.createElement("article");
@@ -80,11 +86,9 @@ export class InfoDisplay {
     }
 
     print_sensors_distance(sensors_distance: number[]) {
-        let elems = this.div_sensors_distance.getElementsByClassName("sensor-dist");
-        for (let i = 0; i < elems.length; i++) {
-            let elem = elems.item(i)!;
-            elem.innerHTML = Number.isFinite(sensors_distance[i]) ? sensors_distance[i].toString() : `&#8734`;
-        }
+        let elems = this.html_raw_distance.forEach((elem, i) =>
+            elem.innerHTML = Number.isFinite(sensors_distance[i]) ? sensors_distance[i].toString() : `&#8734`
+        )
     }
 
     print_sensors_fuzzy(sensors_fuzzy: FuzzySensor[]) {
@@ -93,16 +97,15 @@ export class InfoDisplay {
         });
         sensors_fuzzy.forEach((value, i) => {
             let htmlMap: Map<InParam, HTMLElement> | null = null;
-            if (i > 4) {
-                htmlMap = this.html_by_target;
-            } else {
+            if (i < this.html_by_distance.length) {
                 htmlMap = this.html_by_distance[i];
                 htmlMap.forEach((value, key) => {
                     value.innerText = `0`;
                 });
+            } else {
+                htmlMap = this.html_by_target;
             }
             if (htmlMap) {
-                // console.log(value);
                 value.values.forEach(element => htmlMap?.get(element.distance)!.innerText = element.value.toFixed(2).toString());
             }
         });
