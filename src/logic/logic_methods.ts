@@ -1,18 +1,18 @@
 import {FunctionIntervals} from "./function_intervals";
 
 export enum InParam {
-    VeryClose,
-    Close,
-    Medium,
-    Far,
+    VeryClose = 1,
+    Close = 2,
+    Medium = 4,
+    Far = 8,
 
-    TStrongLeft,
-    TLeft,
-    TRight,
-    TStrongRight,
+    TStrongLeft = 16,
+    TLeft = 32,
+    TRight = 64,
+    TStrongRight = 128,
 
-    TClose,
-    TFar
+    TClose = 256,
+    TFar = 512
 }
 
 export enum OutParam {
@@ -90,20 +90,21 @@ export class LogicMethods {
     in_angl_funcs = new Map<InParam, MembershipFunc>();
     in_t_dist_funcs = new Map<InParam, MembershipFunc>();
     output_funcs = new Map<OutParam, MembershipFunc>();
+
     constructor(intervals: FunctionIntervals) {
         for (let i = 0; i < 4; i++) {
             let arr = intervals.distance.slice(2*i, 2*i + 4);
-            this.in_dist_funcs.set(i, new MembershipFunc(arr));
+            this.in_dist_funcs.set(2**i, new MembershipFunc(arr));
         }
 
         for (let i = 0; i < 4; i++) {
             let arr = intervals.angle.slice(2*i, 2*i + 4);
-            this.in_angl_funcs.set(i + 4, new MembershipFunc(arr));
+            this.in_angl_funcs.set(2**(i + 4), new MembershipFunc(arr));
         }
 
         for (let i = 0; i < 2; i++) {
             let arr = intervals.target_dist.slice(2*i, 2*i + 4);
-            this.in_t_dist_funcs.set(i + 8, new MembershipFunc(arr));
+            this.in_t_dist_funcs.set(2**(i + 8), new MembershipFunc(arr));
         }
         for (let i = 0; i < 4; i++) {
             let arr = intervals.speed.slice(2*i, 2*i + 4);

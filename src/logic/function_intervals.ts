@@ -56,5 +56,5 @@ export class FunctionIntervals {
 
 //pass  радиус поворота
 export var FI : FunctionIntervals;
-FI = new FunctionIntervals(15, 18); // Можно поменять место инициализации
+FI = new FunctionIntervals(15, 100); // Можно поменять место инициализации
 

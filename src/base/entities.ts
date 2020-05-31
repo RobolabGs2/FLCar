@@ -72,9 +72,11 @@ export class BlankCar implements DrawableActor, PhisicsActor, LogicActor {
         this.acceleration = cs.acceleration;
 
         this.sensors = [
+            new BlankSensor(cs.sensor_len, -Math.PI/2),
             new BlankSensor(cs.sensor_len, -Math.PI/4), // LEFT
             new BlankSensor(cs.sensor_len, 0),          // MIDDLE
-            new BlankSensor(cs.sensor_len, Math.PI/4)   // RIGHT
+            new BlankSensor(cs.sensor_len, Math.PI/4),   // RIGHT
+            new BlankSensor(cs.sensor_len, Math.PI/2)
         ];
         this.target = new TargetSensor();
         this.status = new LogicStatus(new FunctionIntervals(cs.turn_radius, cs.max_speed));

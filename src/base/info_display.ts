@@ -16,12 +16,12 @@ export class InfoDisplay {
 
     // Куча копипасты, кошмар, но дженерик от enum быстро сделать не смог
     constructor() {
-        this.html_by_distance = new Array(3).fill(1).map(() => new Map<InParam, HTMLElement>());
+        this.html_by_distance = new Array(5).fill(1).map(() => new Map<InParam, HTMLElement>());
         this.html_by_target = new Map<InParam, HTMLElement>();
         this.div_sensors_distance = document.getElementById("sensors-distance")!;
         const div_sensors_fuzzy = document.getElementById("sensors-fuzzy")!;
         const div_sensors_target = document.getElementById("sensor-fuzzy-target")!;
-        for (let sensor = 0; sensor < 3; sensor++) {
+        for (let sensor = 0; sensor < 5; sensor++) {
             const sensor_html = document.createElement('section');
             sensor_html.classList.add('outparams');
             for (let i in InParam) {
@@ -93,7 +93,7 @@ export class InfoDisplay {
         });
         sensors_fuzzy.forEach((value, i) => {
             let htmlMap: Map<InParam, HTMLElement> | null = null;
-            if (i > 2) {
+            if (i > 4) {
                 htmlMap = this.html_by_target;
             } else {
                 htmlMap = this.html_by_distance[i];
@@ -102,6 +102,7 @@ export class InfoDisplay {
                 });
             }
             if (htmlMap) {
+                // console.log(value);
                 value.values.forEach(element => htmlMap?.get(element.distance)!.innerText = element.value.toFixed(2).toString());
             }
         });
