@@ -10,11 +10,11 @@ export const DEFAULT_CAR = {
     max_speed: 100,
     acceleration: 10,
     sensor_len: 105,
-    coordinates: new Point(500, 500),
+    coordinates: new Point(750, 750),
     angle: 0,
 };
 
-export const DEFAULT_TARGET = new Point(100, 200);
+export const DEFAULT_TARGET = new Point(50, 50);
 
 export type Settings = {
     map: ImageBitmap,

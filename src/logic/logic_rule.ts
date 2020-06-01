@@ -37,46 +37,48 @@ export class LogicRule {
 
 export var LOGIC_RULES: LogicRule[] = [
     // Speed rules - obstacles
-    new LogicRule([], OutP.Slow),
+    new LogicRule([null, null, InP.Far, null, null, null, InP.TFar], OutP.Medium),
+    new LogicRule([null, null, InP.Medium, null, null], OutP.Medium),
+    new LogicRule([null, null, InP.Close, null, null], OutP.Slow),
+    new LogicRule([null, null, InP.VeryClose, null, null], OutP.VerySlow),
+    new LogicRule([null, null, null, null, null, null, InP.TClose], OutP.VerySlow),
 
     // *** Obstacles turn rules
     // If something on left -> turn right
-    new LogicRule([null, InP.Medium,     InP.Medium, InP.Far,        null], OutP.Right),
-    new LogicRule([null, InP.Close,      InP.Close,  ge(InP.Medium), null], OutP.Right),
-    new LogicRule([null, InP.VeryClose,  null,       ge(InP.Close),  null], OutP.StrongRight),
+    new LogicRule([null, InP.Medium,    InP.Medium,    InP.Far,        null], OutP.Right),
+    new LogicRule([null, le(InP.Close), le(InP.Close), ge(InP.Medium), null], OutP.StrongRight),
+    new LogicRule([null, InP.VeryClose, null,          ge(InP.Close),  null], OutP.StrongRight),
 
-    // If something on right -> turn left
-    new LogicRule([null, InP.Far,        InP.Medium, InP.Medium], OutP.Left),
-    new LogicRule([null, ge(InP.Medium), InP.Close,  InP.Close],  OutP.Left),
-    new LogicRule([null, ge(InP.Close),  null,       InP.VeryClose], OutP.StrongLeft),
+    // // If something on right -> turn left
+    new LogicRule([null, InP.Far,        InP.Medium,    InP.Medium,    null], OutP.Left),
+    new LogicRule([null, ge(InP.Medium), le(InP.Close), le(InP.Close), null], OutP.StrongLeft),
+    new LogicRule([null, ge(InP.Close),  null,          InP.VeryClose, null], OutP.StrongLeft),
 
-    // *** Targeting
-    // Поворот срабатывает в сложных ситуация (надо ужесточить правила)
-    // If Target on left && Free ahead -> turn left
-    new LogicRule([null, InP.Far, ge(InP.Far),    null, ge(InP.Close), InP.TStrongLeft], OutP.StrongLeft),
-    new LogicRule([null, InP.Far, ge(InP.Medium), null, ge(InP.Close), InP.TLeft], OutP.Left),
-    // If Target on right && Free ahed -> turn right
-    new LogicRule([ge(InP.Close), null, ge(InP.Far),    InP.Far, null, InP.TStrongRight], OutP.StrongRight),
-    new LogicRule([ge(InP.Close), null, ge(InP.Medium), InP.Far, null, InP.TRight], OutP.Right),
+    // // *** Targeting
+    // // Поворот срабатывает в сложных ситуация (надо ужесточить правила)
+    // // If Target on left && Free ahead -> turn left
+    new LogicRule([null, InP.Far, ge(InP.Far), null, ge(InP.Medium), InP.TStrongLeft],  OutP.StrongLeft),
+    new LogicRule([null, InP.Far, ge(InP.Far), null, ge(InP.Medium), InP.TLeft],        OutP.Left),
+    // // If Target on right && Free ahed -> turn right
+    new LogicRule([ge(InP.Medium), null, ge(InP.Far), InP.Far, null, InP.TStrongRight], OutP.StrongRight),
+    new LogicRule([ge(InP.Medium), null, ge(InP.Far), InP.Far, null, InP.TRight],       OutP.Right),
 
-    // *** Trap solution
-    // Prioritizing LEFT when obstacle ONLY on front
-    new LogicRule([null, InP.Far, le(InP.Medium),    InP.Far], OutP.Left),
-    // new LogicRule([null, InP.Far, InP.Close,     InP.Far], OutP.StrongLeft),
-    // new LogicRule([null, InP.Far, InP.VeryClose, InP.Far], OutP.StrongLeft),
+    // // *** Trap solution
+    // // Prioritizing LEFT when obstacle on front && LEFT == RIGHT
+    new LogicRule([null, InP.Far,    le(InP.Medium), InP.Far,    null], OutP.StrongLeft),
+    new LogicRule([null, InP.Medium, InP.Medium, InP.Medium, null], OutP.StrongLeft),
 
-    new LogicRule([null, InP.VeryClose, null, InP.VeryClose], OutP.StrongLeft),
-
-    new LogicRule([InP.Medium,    InP.Far, null, InP.Far, null], OutP.Left),
-    new LogicRule([le(InP.Close), InP.Far, null, InP.Far, null], OutP.StrongLeft),
-    new LogicRule([null,          InP.Far, null, InP.Far, InP.Medium], OutP.Right),
-    new LogicRule([null,          InP.Far, null, InP.Far, le(InP.Close)], OutP.StrongRight),
+    new LogicRule([le(InP.Close), InP.Far, null, null, null],          OutP.Left),
+    new LogicRule([null,          null, null, InP.Far, le(InP.Close)], OutP.Right),
 
 
     // Слишком отдаляется при попытке отлипания
+    //  ОТЛИП ДОЛЖЕН ЗАВИСИТЬ ОТ УГЛА ТАРГЕТА
     // Antistick rules
-    // new LogicRule([le(InP.VeryClose),  ge(InP.Close), null, null,          ge(InP.Medium)], OutP.StrongRight),
-    // new LogicRule([ge(InP.Medium), null,          null, ge(InP.Close), le(InP.VeryClose)], OutP.StrongLeft),
+    new LogicRule([le(InP.Close), le(InP.Medium), ge(InP.Far), ge(InP.Far),          ge(InP.Medium), InP.TStrongRight], OutP.Right),
+    // new LogicRule([le(InP.Close), le(InP.Medium), ge(InP.Far), ge(InP.Far),          ge(InP.Medium), null], OutP.Medium),
+    new LogicRule([ge(InP.Medium),    ge(InP.Far),       ge(InP.Far), le(InP.Medium), le(InP.Close), InP.TLeft],  OutP.StrongLeft),
+    // new LogicRule([ge(InP.Medium),    ge(InP.Far),       ge(InP.Far), le(InP.Medium), le(InP.Close), null],  OutP.Medium),
 ]
 
 // Greater or equal
