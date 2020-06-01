@@ -40,7 +40,7 @@ unpause();
 
 Promise.all(["circus.png", "small_car.png"].map(src => downloadBitmap(`./resources/${src}`)))
     .then(function ([map, car]) {
-        const settings = {map, car, car_settings: DEFAULT_CAR, target: DEFAULT_TARGET, time: 3};
+        const settings = {map, car, car_settings: DEFAULT_CAR, target: DEFAULT_TARGET, time: 1};
         simulator.startSimulation(settings);
         const map_form = document.getElementById("map-settings") as HTMLFormElement;
         map_form.addEventListener("submit", ev => {
