@@ -38,8 +38,8 @@ export class LogicRule {
 export var LOGIC_RULES: LogicRule[] = [
     // Speed rules - obstacles
     new LogicRule([null, null, InP.Far, null, null, null, InP.TFar], OutP.Medium),
-    new LogicRule([null, null, InP.Medium, null, null], OutP.Medium),
-    new LogicRule([null, null, InP.Close, null, null], OutP.Slow),
+    new LogicRule([null, null, InP.Medium, null, null, InP.TFar], OutP.Medium),
+    new LogicRule([null, null, InP.Close, null, null, InP.TFar], OutP.Slow),
     new LogicRule([null, null, InP.VeryClose, null, null], OutP.VerySlow),
     new LogicRule([null, null, null, null, null, null, InP.TClose], OutP.VerySlow),
 
