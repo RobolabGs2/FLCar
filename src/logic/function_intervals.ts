@@ -42,7 +42,7 @@ export class FunctionIntervals {
     //             |  ╳       ╳       ╳
     //             |/   \    / \     / \
     //            01    3  4   5   6   7
-    this.speed = [0,0,0, max_speed*(1/6), max_speed*(2/6), max_speed*(3/6), max_speed*(4/6), max_speed*(5/6), max_speed*(6/6), max_speed*(6/6)]
+    this.speed = [0,0,0, 15, 18, 20, max_speed*(4/6), max_speed*(5/6), max_speed*(6/6), max_speed*(6/6)]
 
     //              ____               ____
     //                  \  / \ | / \  /
