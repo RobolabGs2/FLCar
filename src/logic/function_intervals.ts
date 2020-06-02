@@ -14,12 +14,13 @@ export class FunctionIntervals {
 
   constructor(turn_range : number, max_speed: number) {
     const range = turn_range*7;
+    let k = (turn_range / 15) * 1.25;
     //               |______   _____   _____   ____
     //               |      \ /     \ /     \ /
     //               |       ╳       ╳       ╳
     //               |      / \     / \     / \
     //               0__1  2   3   4   5   6   7
-    this.distance = [0, 0, 20, 27, 35, 40, 45, 95, Infinity, Infinity];
+    this.distance = [0, 0, 20, 27, 35, 40, 45, 95, Infinity, Infinity].map(x => x * k);
 
 
     //              ____               ____
