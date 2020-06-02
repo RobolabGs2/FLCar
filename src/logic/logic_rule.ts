@@ -65,8 +65,11 @@ export var LOGIC_RULES: LogicRule[] = [
 
     // // *** Trap solution
     // // Prioritizing LEFT when obstacle on front && LEFT == RIGHT
-    new LogicRule([null, InP.Far,    le(InP.Medium), InP.Far,    null], OutP.StrongLeft),
-    new LogicRule([null, InP.Medium, InP.Medium, InP.Medium, null], OutP.StrongLeft),
+    new LogicRule([ge(InP.Far), InP.Far,    le(InP.Medium), InP.Far,    null], OutP.StrongLeft),
+    new LogicRule([ge(InP.Far), InP.Medium, ge(InP.Medium), InP.Medium, null], OutP.StrongLeft),
+    new LogicRule([ge(InP.Far), InP.Close,  ge(InP.Close), InP.Close, null], OutP.StrongLeft),
+    new LogicRule([ge(InP.Far), InP.VeryClose,  ge(InP.Close), InP.VeryClose, null], OutP.StrongLeft),
+    new LogicRule([null, le(InP.Medium), null, le(InP.Medium), null], OutP.Slow),
 
     new LogicRule([le(InP.Close), InP.Far, null, null, null],          OutP.Left),
     new LogicRule([null,          null, null, InP.Far, le(InP.Close)], OutP.Right),
