@@ -9,7 +9,7 @@ export class FunctionIntervals {
   //Dependence number for converting distances, defines 'far'
 
   static validate_input_values(turn_range: number, sensors_dst: number, max_speed: number){
-    return sensors_dst >= turn_range*7 && max_speed > 0;
+    return sensors_dst >= turn_range*7 && max_speed > 20 && max_speed <= 200 && turn_range > 5 && turn_range < 25;
   }
 
   constructor(turn_range : number, max_speed: number) {
@@ -36,7 +36,7 @@ export class FunctionIntervals {
     //                  |       ╳
     //                  |      / \
     //                  0__1  2   3
-    this.target_dist = [0, 0, 200, 300, Infinity, Infinity]
+    this.target_dist = [0, 0, 2, 3, Infinity, Infinity].map(x => x*Math.max(max_speed, 100))
 
     //             |     ____   _____   _____
     //             |\   /    \ /     \ /

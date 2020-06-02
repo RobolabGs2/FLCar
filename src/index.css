@@ -1,6 +1,9 @@
 body {
     display: flex;
     flex-wrap: wrap;
+    font-family: monospace;
+    font-size: large;
+
 }
 
 canvas {
@@ -24,4 +27,9 @@ form > * {
 
 #start-button {
     height: 64px;
+}
+
+footer > section {
+    margin-top: 4px;
+
 }
