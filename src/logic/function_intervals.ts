@@ -9,12 +9,12 @@ export class FunctionIntervals {
   //Dependence number for converting distances, defines 'far'
 
   static validate_input_values(turn_range: number, sensors_dst: number, max_speed: number){
-    return sensors_dst >= turn_range*7 && max_speed > 20 && max_speed <= 200 && turn_range > 5 && turn_range < 25;
+    return (sensors_dst >= turn_range*7 || sensors_dst >= 105) && max_speed > 20 && max_speed <= 200 && turn_range > 5 && turn_range < 25;
   }
 
   constructor(turn_range : number, max_speed: number) {
-    const range = turn_range*7;
-    let k = (turn_range / 15) * 1.25;
+    const range = turn_range * 7;
+    let k = ((turn_range - 5) / 10);
     //               |______   _____   _____   ____
     //               |      \ /     \ /     \ /
     //               |       ╳       ╳       ╳
